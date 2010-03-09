@@ -105,7 +105,7 @@ is
             end;
           exception
             when others =>
-              result:= aws_error; -- zlib_error
+              result:= aws_error;
           end;
           if Text_IO_Monitor then
             Put_Line(" result :" & Result_type'Image(result));
