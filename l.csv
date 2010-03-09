@@ -1,0 +1,5 @@
+Name;Category C(ompiled), S(cript), O(ther);Confidence factor (percent)
+Ada;C;100
+Pascal;C;100
+Fortran;C;100
+Python;S;100
