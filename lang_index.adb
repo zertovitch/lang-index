@@ -20,7 +20,7 @@ is
   name_lng  : array(1..max_lng) of Unbounded_String;
   name_eng  : array(1..max_eng) of Unbounded_String;
   category  : array(1..max_lng) of Character;
-  confidence: array(1..max_lng) of Natural;
+  confidence: array(1..max_lng) of Natural; -- percents of true positives
   tot_lng   : Natural:= 0;
   tot_eng   : Natural:= 0;
   sep: constant Character:= ';';
@@ -60,7 +60,7 @@ is
             le : constant String:= Get_Line(e);
             fe : constant CSV.Fields_Bounds:= CSV.Get_Bounds(le, sep);
             eng: constant String:= CSV.Extract(le, fe, 1, True);
-            qry: constant String:= CSV.Extract(le, fe, 3, True) & lng & "+programming";
+            qry: constant String:= CSV.Extract(le, fe, 3, True) & "%2B%22" & lng & "%20programming%22";
             match: constant String:= CSV.Extract(le, fe, 4, True);
             tok_i: Integer;
             i: Positive;
@@ -95,12 +95,6 @@ is
                   exit when web(i) = '<'; -- give up at next tag
                 end loop;
                 hits(idx_lng, idx_eng):= r;
-              end if;
-              if Text_IO_Monitor and result = no_match then
-                Put(web);
-                New_Line;
-                Put("Enter");
-                Skip_Line;
               end if;
             end;
           exception
