@@ -16,11 +16,13 @@ is
   max_eng   : constant:= 20;
   invalid   : constant:= -1;
   hits      : array(1..max_lng, 1..max_eng) of Integer:= (others=> (others => invalid));
+  total_hits: array(1..max_eng) of Integer:= (others => invalid);
   weight    : array(1..max_eng) of Natural;
   name_lng  : array(1..max_lng) of Unbounded_String;
   name_eng  : array(1..max_eng) of Unbounded_String;
   category  : array(1..max_lng) of Character;
-  confidence: array(1..max_lng) of Natural; -- percents of true positives
+  confidence: array(1..max_lng) of Natural;
+  rank_eng  : array(1..max_lng, 1..max_eng) of Float;
   tot_lng   : Natural:= 0;
   tot_eng   : Natural:= 0;
   sep: constant Character:= ';';
@@ -37,7 +39,7 @@ is
     type Result_type is (ok, no_match, aws_error);
     result: Result_type;
   begin
-    Open(l, In_File, "l.csv");
+    Open(l, In_File, "l.csv"); -- Open the language file
     Skip_Line(l); -- header
     idx_lng:= 0;
     while not End_Of_File(l) loop
@@ -45,14 +47,15 @@ is
         ll : constant String:= Get_Line(l);
         fl : constant CSV.Fields_Bounds:= CSV.Get_Bounds(ll, sep);
         lng: constant String:= CSV.Extract(ll, fl, 1, True);
-        cat: constant String:= CSV.Extract(ll, fl, 2, True);
+        lng_qry: constant String:= CSV.Extract(ll, fl, 2, True);
+        cat: constant String:= CSV.Extract(ll, fl, 3, True);
       begin
         idx_lng:= idx_lng + 1;
         tot_lng:= Integer'Max(tot_lng, idx_lng);
         category(idx_lng):= cat(cat'First);
-        confidence(idx_lng):= Integer'Value(CSV.Extract(ll, fl, 3, True));
+        confidence(idx_lng):= Integer'Value(CSV.Extract(ll, fl, 4, True));
         name_lng(idx_lng):= U(lng);
-        Open(e, In_File, "e.csv");
+        Open(e, In_File, "e.csv"); -- Open the engine file
         Skip_Line(e); -- header
         idx_eng:= 0;
         while not End_Of_File(e) loop
@@ -60,7 +63,7 @@ is
             le : constant String:= Get_Line(e);
             fe : constant CSV.Fields_Bounds:= CSV.Get_Bounds(le, sep);
             eng: constant String:= CSV.Extract(le, fe, 1, True);
-            qry: constant String:= CSV.Extract(le, fe, 3, True) & "%2B%22" & lng & "%20programming%22";
+            qry: constant String:= CSV.Extract(le, fe, 3, True) & "%2B""" & lng_qry & "%20programming""";
             match: constant String:= CSV.Extract(le, fe, 4, True);
             tok_i: Integer;
             i: Positive;
@@ -96,6 +99,12 @@ is
                 end loop;
                 hits(idx_lng, idx_eng):= r;
               end if;
+              if Text_IO_Monitor and result = no_match then
+                Put(web);
+                New_Line;
+--                Put("Enter");
+--                Skip_Line;
+              end if;
             end;
           exception
             when others =>
@@ -113,17 +122,39 @@ is
     Close(l);
   end Gathering;
   --
+  procedure Statistics is
+  begin
+    for e in 1..tot_eng loop
+      total_hits(e):= 0;
+      for l in 1..tot_lng loop
+        total_hits(e):= total_hits(e) + hits(l,e);
+      end loop;
+      for l in 1..tot_lng loop
+        rank_eng(l,e):= Float(hits(l,e)) / Float(total_hits(e));
+      end loop;
+    end loop;
+  end Statistics;
+  --
   procedure Report is
   begin
+    -- Header
     CSV_details:= U("" & sep);
-    for e in 1..tot_eng loop
-      CSV_details:= CSV_details & name_eng(e) & sep;
+    for x in 1..2 loop
+      for e in 1..tot_eng loop
+        CSV_details:= CSV_details & name_eng(e) & sep;
+      end loop;
+      CSV_details:= CSV_details & sep;
     end loop;
     CSV_details:= CSV_details & ASCII.LF;
+    -- Grid
     for l in 1..tot_lng loop
       CSV_details:= CSV_details & name_lng(l) & sep;
       for e in 1..tot_eng loop
         CSV_details:= CSV_details & U(Integer'Image(hits(l,e)) & sep);
+      end loop;
+      CSV_details:= CSV_details & sep;
+      for e in 1..tot_eng loop
+        CSV_details:= CSV_details & U(Float'Image(rank_eng(l,e)) & sep);
       end loop;
       CSV_details:= CSV_details & ASCII.LF;
     end loop;
@@ -131,5 +162,6 @@ is
   --
 begin
   Gathering;
+  Statistics;
   Report;
 end Lang_Index; 
