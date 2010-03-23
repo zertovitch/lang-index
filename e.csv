@@ -1,7 +1,6 @@
-Engine;Weight;Query;Find figure after…;Test
-Google;23;http://www.google.co.uk/search?q=;<b>10</b>;"http://www.google.co.uk/search?q=%2B""Ada programming"""
-Google Blogs;23;http://blogsearch.google.co.uk/blogsearch?as_q=;<b>10</b>;"http://blogsearch.google.co.uk/blogsearch?as_q=%2B""Ada programming"""
-Yahoo!;23;http://search.yahoo.com/search?q=;"""resultCount"">";"http://search.yahoo.com/search?q=%2B""Ada programming"""
-Wikipedia;23;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=;</b> of <b>;"http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=%2B""Ada programming"""
-YouTube;7;http://www.youtube.com/results?search_query=; of about <strong>;"http://www.youtube.com/results?search_query=%2B""Ada programming"""
-MSN / Bing;5;http://www.bing.com/search?q=;1-10;"http://www.bing.com/search?q=%2B""Ada programming"""
+Engine;Weight;Query;Find figure after…;figures to skip after key;give up after (0 match);Test
+Google;23;http://www.google.co.uk/search?q=;<b>10</b>;0;;"http://www.google.co.uk/search?q=%2B""Ada programming"""
+Google Blogs;23;http://blogsearch.google.co.uk/blogsearch?as_q=;<b>10</b>;0;;"http://blogsearch.google.co.uk/blogsearch?as_q=%2B""Ada programming"""
+Yahoo!;23;http://search.yahoo.com/search?q=;"""resultCount"">";0;;"http://search.yahoo.com/search?q=%2B""Ada programming"""
+Wikipedia;23;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=;</b> of <b>;0;;"http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=%2B""Ada programming"""
+YouTube;7;http://www.youtube.com/results?search_query=;search-query;2;</div>;"http://www.youtube.com/results?search_query=%2B""Ada programming"""

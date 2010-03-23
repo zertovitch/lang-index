@@ -1,0 +1,51 @@
+-- This is a GNAT, GCC or GNAT Programming Studio (GPS) project file
+-- for the Lang_Index project ( http://sourceforge.net/projects/lang-index/ )
+-- Build me with "gnatmake -P lang_index.gpr", or open me with GPS
+--
+project Lang_Index is
+
+   for Main use ("lang_index_to_files.adb");
+   for Source_Dirs use (".", "aws_stuff");
+   for Exec_Dir use ".";
+   type Build_Mode_Type is
+      ("Debug", "Small");
+   Build_Mode : Build_Mode_Type := external ("Build_Mode", "Debug");
+
+   case Build_Mode is
+
+      when "Debug" =>
+         for Object_Dir use "obj_debug";
+
+      when "Small" =>
+         for Object_Dir use "obj_small";
+   end case;
+
+   package Builder is
+      for Default_Switches ("ada") use ("-Iaws_stuff");
+   end Builder;
+
+   package Compiler is
+
+      case Build_Mode is
+
+         when "Debug" =>
+            for Default_Switches ("ada") use ("-gnatVa", "-gnato", "-g", "-fstack-check");
+
+         when "Small" =>
+            for Default_Switches ("ada") use ("-gnatp", "-Os", "-ffunction-sections");
+      end case;
+   end Compiler;
+
+   package Linker is
+
+      case Build_Mode is
+
+         when "Debug" =>
+
+         when "Small" =>
+            for Default_Switches ("ada") use ("-s", "-Wl,--gc-sections");
+      end case;
+   end Linker;
+
+end Lang_Index;
+
