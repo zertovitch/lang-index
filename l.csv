@@ -1,8 +1,8 @@
-Display Name;Search Name (best in grouping);Category;Confidence factor (percent);This is for filtering false positives (includes exceptions);Last checked;
+Display Name;Search Name (best in grouping);Category;Confidence factor (percent);This is for filtering false positives (includes exceptions);Last checked;Engine
 ABAP;ABAP;Other;100;;;
-ABC;ABC;Compiled;100;;;
+ABC;ABC;Script;23;Many hits about ABC / ABC News TV channel;23.03.2010;Clusty
 ActionScript;ActionScript;Script;100;;;
-Ada;Ada;Compiled;100;;23.03.2010;Google
+Ada;Ada;Compiled;100;ok;23.03.2010;Google
 Alice;Alice;Script;100;;;
 APL;APL;Script;100;;;
 Awk;Awk;Script;100;;;
@@ -14,22 +14,23 @@ C++;C++;Compiled;90;in 100 hits, 10 exclusively C or Objective-C;23.03.2010;Clus
 Caml/F#;F%20sharp;Compiled;100;;;
 CL (OS/400);CL;Script;100;;;
 COBOL;COBOL;Other;100;;;
-ColdFusion;ColdFusion;Script;100
-D;D;Compiled;100
-Delphi;Delphi;Compiled;100
-Erlang;Erlang;Compiled;100
-Euphoria;Euphoria;Compiled;100
-Forth;Forth;Compiled;100
-Fortran;Fortran;Compiled;100
-FoxPro/xBase;Fox%20Pro;Other;100
-Go;Go;Compiled;100
-Groovy;Groovy;Script;100
-Haskell;Haskell;Compiled;100
-Icon;Icon;Compiled;100
-IDL;IDL;Script;100
-io;io;Script;100
-J;J;Script;100
-Java;Java;Compiled;100
+ColdFusion;ColdFusion;Script;100;;;
+D;D;Compiled;100;ok;23.03.2010;Clusty
+Delphi;Delphi;Compiled;100;;;
+Erlang;Erlang;Compiled;100;;;
+Euphoria;Euphoria;Compiled;100;;;
+Forth;Forth;Compiled;100;;;
+Fortran;Fortran;Compiled;100;;;
+FoxPro/xBase;Fox%20Pro;Other;100;;;
+Go;Go;Compiled;100;;;
+Groovy;Groovy;Script;100;;;
+Haskell;Haskell;Compiled;100;;;
+Icon;Icon;Compiled;100;;;
+Informix/4GL;Informix/4GL;Other;100;;;
+IDL;IDL;Script;100;;;
+io;io;Script;100;;;
+J;J;Script;100;;;
+Java;Java;Compiled;100;;
 JavaFX Script;JavaFX%20Script;Script;100;;
 JavaScript;JavaScript;Script;100;;
 LabView;LabView;Other;100;;
@@ -61,7 +62,7 @@ Q;Q;Script;100;;
 R;R;Script;100;;
 REXX;REXX;Script;100;;
 Ruby;Ruby;Script;100;;
-SAS;SAS;Other;100;;
+SAS;SAS;Other;100
 Scala;Scala;Compiled;100
 Scratch;Scratch;Script;100
 S-lang;S-lang;Script;100

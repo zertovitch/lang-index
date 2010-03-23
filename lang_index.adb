@@ -172,15 +172,16 @@ is
     w: array(1..tot_eng) of Float;
     --
     total_hits: array(1..tot_eng) of Float:= (others => 0.0);
+    plausible_hits: array(1..tot_lng(any), 1..tot_eng) of Float;
     total: Float;
   begin
     for e in 1..tot_eng loop
       for l in 1..tot_lng(any) loop
-        total_hits(e):= total_hits(e) +
-          Float(hits(l,e)) * Float(confidence(l)) * 0.01;
+        plausible_hits(l,e):= Float(hits(l,e)) * Float(confidence(l)) * 0.01;
+        total_hits(e):= total_hits(e) + plausible_hits(l,e);
       end loop;
       for l in 1..tot_lng(any) loop
-        rank_eng(l,e):= Float(hits(l,e)) / Float(total_hits(e));
+        rank_eng(l,e):= plausible_hits(l,e) / Float(total_hits(e));
       end loop;
     end loop;
     -- Normalized weights
@@ -287,13 +288,16 @@ is
     ----------------------------------
     -- HTML main tables for display --
     ----------------------------------
-    grd:= U("<table border=1 cellspacing=5 cellpadding=5><tr valign=top>" & ASCII.LF);
+    grd:= U(
+      "<table border=1 cellspacing=5 cellpadding=5>" &
+      "<tr valign=top bgcolor=lightgray>" & ASCII.LF
+    );
     for cat in Category loop
       -- Header
       grd:= grd &
         "<td>Language category: <b>" & To_Lower(Category'Image(cat)) &
-        "</b><br><table border=1 cellspacing=2 cellpadding=5>" &
-        "<td>Rank</td><td>Name</td><td>Share</td>";
+        "</b><br><br><table border=1 cellspacing=2 cellpadding=2 bgcolor=white>" &
+        "<tr><td>Rank</td><td>Name</td><td>Share</td>";
       -- Grid
       for lc in 1..tot_lng(cat) loop
         grd:= grd &
