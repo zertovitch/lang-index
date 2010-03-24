@@ -1,18 +1,20 @@
-Display Name;Search Name (best in grouping);Category;Confidence factor (percent);This is for filtering false positives (includes exceptions);Last checked;Engine
+Display Name;Search Name;Category;Confidence factor (percent);<-- This factor is for filtering false positives (includes exceptions);Last checked;Engine
 ABAP;ABAP;Other;100;;;
 ABC;ABC;Script;23;Many hits about ABC / ABC News TV channel;23.03.2010;Clusty
 ActionScript;ActionScript;Script;100;;;
-Ada;Ada;Compiled;100;ok;23.03.2010;Google
+Ada;Ada;Compiled;100;ok in 100 links;23.03.2010;Google
 Alice;Alice;Script;100;;;
 APL;APL;Script;100;;;
+AppleScript;AppleScript;Script;100;;;
 Awk;Awk;Script;100;;;
 Basic;Basic;Compiled;97;"some ""basic programming concepts"" etc.";23.03.2010;Google
 Bourne shell;Bash;Script;100;;;
-C;C;Compiled;97;in 100 hits, 3 exclusively C++, C# or Objective-C;23.03.2010;Google
+C;C;Compiled;97;in 100 linkts, 3 exclusively C++, C# or Objective-C;23.03.2010;Google
 C#;C%23;Compiled;100;;;
-C++;C++;Compiled;90;in 100 hits, 10 exclusively C or Objective-C;23.03.2010;Clusty
+C++;C%2B%2B;Compiled;90;in 100 links, 10 exclusively C or Objective-C;23.03.2010;Clusty
 Caml/F#;F%20sharp;Compiled;100;;;
 CL (OS/400);CL;Script;100;;;
+Clipper;Clipper;Compiled;100;;;
 COBOL;COBOL;Other;100;;;
 ColdFusion;ColdFusion;Script;100;;;
 D;D;Compiled;100;ok;23.03.2010;Clusty
@@ -28,8 +30,8 @@ Forth;Forth;Compiled;100;;;
 Fortran;Fortran;Compiled;100;;;
 FoxPro/xBase;Fox%20Pro;Other;100;;;
 Go;Go;Compiled;100;;;
-Groovy;Groovy;Script;100;;;
-Haskell;Haskell;Compiled;100;;;
+Groovy;Groovy;Script;100
+Haskell;Haskell;Compiled;100
 Icon;Icon;Compiled;100
 Informix/4GL;Informix/4GL;Other;100
 IDL;IDL;Script;100
@@ -44,15 +46,23 @@ Lingo;Lingo;Script;100
 Lisp/Scheme;Lisp/Scheme;Compiled;100
 Logo;Logo;Script;100
 Lua;Lua;Script;100
-Maple;Maple;Script;100
-Mathematica;Mathematica;Script;100
+MAD;MAD;Compiled;45;;24.03.2010
+Maple;Maple;Script;100;;
+Mathematica;Mathematica;Script;100;;
 MATLAB;MATLAB;Script;100;;
 MAX/MSP;MAX/MSP;Script;100;;
+Metafont;Metafont;Script;100;;
 ML;ML;Compiled;100;;
+Modula-2;Modula%2D2;Compiled;100;;
+Modula-3;Modula%2D3;Compiled;100;;
+MUMPS;MUMPS;Other;100;;
 Natural;Natural;Other;45;;23.03.2010
-NXT-G;NXT-G;Script;100;;
-Objective-C;Objective-C;Compiled;100;;
+NXT-G;NXT%2DG;Script;100;;
+Oberon;Oberon;Compiled;100;;
+Objective-C;Objective%2DC;Compiled;100;;
+Ocaml;Ocaml;Compiled;100;;
 Occam;Occam;Compiled;100;;
+Oz;Oz;Script;100;;
 Pascal;Pascal;Compiled;100;;
 Perl;Perl;Script;100;;
 PHP;PHP;Script;100;;
@@ -71,8 +81,16 @@ Ruby;Ruby;Script;100;;
 SAS;SAS;Other;100;;
 Scala;Scala;Compiled;100;;
 Scratch;Scratch;Script;100;;
-S-lang;S-lang;Script;100;;
+S-lang;S%2Dlang;Script;100;;
 Smalltalk;Smalltalk;Compiled;100;;
+SIGNAL;SIGNAL;Other;65;;24.03.2010
+Smalltalk;Smalltalk;Compiled;100;;
+SISAL;SISAL;Compiled;100;;24.03.2010
+SuperCollider;SuperCollider;Compiled;100;;
 Tcl/Tk;Tcl/Tk;Script;100;;
-Transact-SQL;Transact-SQL;Other;100;;
+TeX / LaTeX;TeX;Script;100;;
+Transact-SQL;Transact%2DSQL;Other;100;;
+VBScript;VBScript;Script;100;;
+Verilog;Verilog;Compiled;100;;
 VHDL;VHDL;Compiled;100;;
+XSLT;XSLT;Compiled;100;;

@@ -16,11 +16,12 @@ procedure Lang_Index(
   Dump_when_no_match : Boolean:= True
 )
 is
-  max_lng   : constant:= 200;
-  max_eng   : constant:= 20;
-  invalid   : constant:= -1;
-  hits      : array(1..max_lng, 1..max_eng) of Integer:= (others=> (others => invalid));
-  weight    : array(1..max_eng) of Natural;
+  max_lng    : constant:= 200;
+  max_eng    : constant:= 20;
+  invalid    : constant:= -1;
+  hits       : array(1..max_lng, 1..max_eng) of Integer:= (others=> (others => invalid));
+  weight     : array(1..max_eng) of Natural;
+  norm_weight: array(1..max_eng) of Float;   -- sum of these weights = 1
   name_lng  : array(1..max_lng) of Unbounded_String;
   name_eng  : array(1..max_eng) of Unbounded_String;
   type Category is (any, compiled, script, other);
@@ -78,7 +79,7 @@ is
             fe : constant CSV.Fields_Bounds:= CSV.Get_Bounds(le, sep);
             eng: constant String:= CSV.Extract(le, fe, 1, True);
             qry: constant String:=
-              CSV.Extract(le, fe, 3, True) & "%2B""" & lng_qry & "%20programming""";
+              CSV.Extract(le, fe, 3, True) & "%2B%22" & lng_qry & "%20programming%22";
             match: constant String := CSV.Extract(le, fe, 4, True);
             skip : constant Natural:= Integer'Value(CSV.Extract(le, fe, 5, True));
             ko   : constant String:= CSV.Extract(le, fe, 6, True);
@@ -169,7 +170,6 @@ is
       );
     --
     sum: Natural:= 0;
-    w: array(1..tot_eng) of Float;
     --
     total_hits: array(1..tot_eng) of Float:= (others => 0.0);
     plausible_hits: array(1..tot_lng(any), 1..tot_eng) of Float;
@@ -189,14 +189,14 @@ is
       sum:= sum + weight(e);
     end loop;
     for e in 1..tot_eng loop
-      w(e):= Float(weight(e)) / Float(sum);
+      norm_weight(e):= Float(weight(e)) / Float(sum);
     end loop;
     -- Compute average ranking
     for l in 1..tot_lng(any) loop
       rank_avg(any)(l):= (0.0, l);
       for e in 1..tot_eng loop
         rank_avg(any)(l).value:=
-          rank_avg(any)(l).value + w(e) * rank_eng(l,e);
+          rank_avg(any)(l).value + norm_weight(e) * rank_eng(l,e);
       end loop;
       -- Make category-sensitive ranking
       cat:= lng_categ(l);
@@ -257,10 +257,12 @@ is
     end loop;
     htm:= htm & "<td></td></tr>" & ASCII.LF;
     htm:= htm & "<tr><td></td><td>&darr; Category</td>";
-    for x in 1..2 loop
-      for e in 1..tot_eng loop
-        htm:= htm & "<td></td>";
-      end loop;
+    for e in 1..tot_eng-1 loop
+      htm:= htm & "<td></td>";
+    end loop;
+    htm:= htm & "<td>Norm. weight &rarr;</td>";
+    for e in 1..tot_eng loop
+      htm:= htm & "<td>" & Pct(norm_weight(e)) & "</td>";
     end loop;
     htm:= htm & "<td>&darr; Confidence</td></tr>" & ASCII.LF;
     -- Grid
@@ -296,7 +298,7 @@ is
       -- Header
       grd:= grd &
         "<td>Language category: <b>" & To_Lower(Category'Image(cat)) &
-        "</b><br><br><table border=1 cellspacing=2 cellpadding=2 bgcolor=white>" &
+        "</b> *<br><br><table border=1 cellspacing=2 cellpadding=2 bgcolor=white>" &
         "<tr><td>Rank</td><td>Name</td><td>Share</td>";
       -- Grid
       for lc in 1..tot_lng(cat) loop
