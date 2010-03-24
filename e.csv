@@ -1,6 +1,6 @@
-Engine;Weight;Query;Find figure after…;Figures to skip after the key;When no match, give up after…;Test
-Google;23;http://www.google.co.uk/search?q=;<b>10</b>;0;;http://www.google.co.uk/search?q=%2B%22Ada%20programming%22
-Google Blogs;23;http://blogsearch.google.co.uk/blogsearch?as_q=;<b>10</b>;0;;http://blogsearch.google.co.uk/blogsearch?as_q=%2B%22Ada%20programming%22
-Yahoo!;23;http://search.yahoo.com/search?q=;"""resultCount"">";0;;http://search.yahoo.com/search?q=%2B%22Ada%20programming%22
-Wikipedia;23;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=;</b> of <b>;0;;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=%2B%22Ada%20programming%22
-YouTube;7;http://www.youtube.com/results?search_query=;search-query;2;</div>;http://www.youtube.com/results?search_query=%2B%22Ada%20programming%22
+Engine;Weight;Query;Find figure after…;Figures to skip after the key;When no match, give up after…;Test;1-Year filter
+Google;23;http://www.google.co.uk/search?q=;<b>10</b>;0;;http://www.google.co.uk/search?q=%2B%22Ada%20programming%22;no
+Google Blogs;23;http://blogsearch.google.co.uk/blogsearch?as_q=;<b>10</b>;0;;http://blogsearch.google.co.uk/blogsearch?as_q=%2B%22Ada%20programming%22;no
+Yahoo!;23;http://search.yahoo.com/search?vd=y&q=;"""resultCount"">";0;;http://search.yahoo.com/search?vd=y&q=%2B%22Ada%20programming%22;yes
+Wikipedia;23;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=;</b> of <b>;0;;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=%2B%22Ada%20programming%22;no
+YouTube;7;http://www.youtube.com/results?search_query=;search-query;2;</div>;http://www.youtube.com/results?search_query=%2B%22Ada%20programming%22;no
