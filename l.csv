@@ -81,11 +81,10 @@ Ruby;Ruby;Script;100;;
 SAS;SAS;Other;100;;
 Scala;Scala;Compiled;100;;
 Scratch;Scratch;Script;100;;
+SIGNAL;SIGNAL;Other;65;;24.03.2010
+SISAL;SISAL;Compiled;100;;24.03.2010
 S-lang;S%2Dlang;Script;100;;
 Smalltalk;Smalltalk;Compiled;100;;
-SIGNAL;SIGNAL;Other;65;;24.03.2010
-Smalltalk;Smalltalk;Compiled;100;;
-SISAL;SISAL;Compiled;100;;24.03.2010
 SuperCollider;SuperCollider;Compiled;100;;
 Tcl/Tk;Tcl/Tk;Script;100;;
 TeX / LaTeX;TeX;Script;100;;
