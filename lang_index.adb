@@ -1,10 +1,12 @@
 with Ada.Text_IO;                       use Ada.Text_IO;
 with Ada.Float_Text_IO;                 use Ada.Float_Text_IO;
+with Ada.Calendar;                      use Ada.Calendar;
 with Ada.Containers.Generic_Array_Sort;
 with Ada.Characters.Handling;           use Ada.Characters.Handling;
 with Ada.Strings.Fixed;                 use Ada.Strings, Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;             use Ada.Strings.Unbounded;
-with CSV;
+
+with CSV, Time_display;
 
 with AWS.Client, AWS.Response;
 
@@ -23,6 +25,7 @@ is
   weight     : array(1..max_eng) of Natural;
   norm_weight: array(1..max_eng) of Float;   -- sum of these weights = 1
   name_lng  : array(1..max_lng) of Unbounded_String;
+  name_lng_qry : array(1..max_lng) of Unbounded_String;
   name_eng  : array(1..max_eng) of Unbounded_String;
   type Category is (any, compiled, script, other);
   lng_categ : array(1..max_lng) of Category;
@@ -35,6 +38,7 @@ is
   type Rank_vector is array(Positive range <>) of Rank_info;
   rank_eng  : array(1..max_lng, 1..max_eng) of Float;
   rank_avg  : array(Category) of Rank_vector(1..max_lng); -- average ranking, sorted
+  rank_avg_any_unsorted: Rank_vector(1..max_lng);
   url       : array(1..max_lng, 1..max_eng) of Unbounded_String;
   tot_eng   : Natural:= 0;
   tot_lng   : array(Category) of Natural:= (others => 0);
@@ -44,6 +48,9 @@ is
     renames Ada.Strings.Unbounded.To_String;
   function U (Source : String) return Ada.Strings.Unbounded.Unbounded_String
     renames Ada.Strings.Unbounded.To_Unbounded_String;
+  --
+  now: constant Time:= Clock;
+  time_str: constant String:= Time_display(now, False);
 
   --------------------------------------
   -- Gathering data from the Internet --
@@ -71,6 +78,7 @@ is
         lng_categ(idx_lng):= Category'Value(cat);
         confidence(idx_lng):= Integer'Value(CSV.Extract(ll, fl, 4, True));
         name_lng(idx_lng):= U(lng);
+        name_lng_qry(idx_lng):= U(lng_qry);
         Open(e, In_File, "e.csv"); -- Open the engine file
         Skip_Line(e); -- header
         while not End_Of_File(e) loop
@@ -215,6 +223,9 @@ is
         end loop;
       end if;
     end loop;
+    -- Keep the unsorted ranking, for the details
+    rank_avg_any_unsorted:= rank_avg(any);
+    -- Sort the rankings per category
     for c in Category loop
       Sort(rank_avg(c)(1..tot_lng(c)));
     end loop;
@@ -235,14 +246,18 @@ is
     --
     htm : Unbounded_String renames HTML_details;
     grd : Unbounded_String renames HTML_table_categ;
+    html_header: constant String:=
+      "<a href=http://sf.net/projects/lang-index/>Language Popularity Index</a>" &
+      " - Web queries done on: " & time_str & "<br><br>";
   begin
     ------------------------------------
     -- HTML grid with details & links --
     ------------------------------------
     -- Header
     htm:= U(
+      html_header &
       "<table border=1>" &
-      "<td></td><td>Search engine &rarr;</td>" & ASCII.LF
+      "<td></td><td></td><td>Search engine &rarr;</td>" & ASCII.LF
     );
     for x in 1..2 loop
       for e in 1..tot_eng loop
@@ -254,21 +269,35 @@ is
         end if;
         htm:= htm & ">" & name_eng(e) & "</td>";
       end loop;
+      if x = 1 then
+        htm:= htm & "<td></td>";
+      end if;
     end loop;
-    htm:= htm & "<td></td></tr>" & ASCII.LF;
-    htm:= htm & "<tr><td></td><td>&darr; Category</td>";
-    for e in 1..tot_eng-1 loop
+    htm:= htm & "<td>Average engine</td></tr>" & ASCII.LF & "<tr>";
+    for e in 1..tot_eng+3 loop
       htm:= htm & "<td></td>";
     end loop;
-    htm:= htm & "<td>Norm. weight &rarr;</td>";
+    htm:= htm & "<td bgcolor=lightgreen>Normalized weight &rarr;</td>";
     for e in 1..tot_eng loop
-      htm:= htm & "<td>" & Pct(norm_weight(e)) & "</td>";
+      htm:= htm &
+        "<td bgcolor=lightgreen align=center>" & Pct(norm_weight(e)) & "</td>";
     end loop;
-    htm:= htm & "<td>&darr; Confidence</td></tr>" & ASCII.LF;
+    htm:= htm & "<td></td></tr>" & ASCII.LF;
+    htm:= htm &
+      "<tr><td>Language display name</td><td>Name in query</td>" &
+      "<td>&darr; Category</td>";
+    for e in 1..tot_eng loop
+      htm:= htm & "<td align=center>Results</td>";
+    end loop;
+    htm:= htm & "<td bgcolor=lightgray>&darr; Confidence</td>";
+    for e in 1..tot_eng+1 loop
+      htm:= htm & "<td align=center>Share</td>";
+    end loop;
+    htm:= htm & "</tr>" & ASCII.LF;
     -- Grid
     for l in 1..tot_lng(any) loop
-      htm:= htm & "<tr><td>" & name_lng(l) &
-        "</td><td>" &
+      htm:= htm &
+        "<tr><td>" & name_lng(l) & "</td><td>" & name_lng_qry(l) & "</td><td>" &
         To_Lower(Category'Image(lng_categ(l))) &
         "</td>";
       for e in 1..tot_eng loop
@@ -278,19 +307,22 @@ is
           Integer'Image(hits(l,e)) &
           "</a></td>";
       end loop;
+      htm:= htm &
+        "<td bgcolor=lightgray>" & Integer'Image(confidence(l)) & "%</td>";
       for e in 1..tot_eng loop
         htm:= htm &
           "<td align=center>" & Pct(rank_eng(l,e)) & "</td>";
       end loop;
       htm:= htm &
-        "<td>" & Integer'Image(confidence(l)) & "%</td>" &
-        "</tr>" & ASCII.LF;
+        "<td align=center>" & Pct(rank_avg_any_unsorted(l).value) & "</td>";
+      htm:= htm & ASCII.LF;
     end loop;
-    htm:= htm & "</table>" & ASCII.LF;
+    htm:= htm & "</tr>" & ASCII.LF;
     ----------------------------------
     -- HTML main tables for display --
     ----------------------------------
     grd:= U(
+      html_header &
       "<table border=1 cellspacing=5 cellpadding=5>" &
       "<tr valign=top bgcolor=lightgray>" & ASCII.LF
     );
