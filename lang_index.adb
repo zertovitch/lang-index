@@ -22,8 +22,9 @@ is
   max_eng    : constant:= 20;
   invalid    : constant:= -1;
   hits       : array(1..max_lng, 1..max_eng) of Integer:= (others=> (others => invalid));
-  weight     : array(1..max_eng) of Natural;
+  weight     : array(1..max_eng) of Natural; -- un-normalized weights
   norm_weight: array(1..max_eng) of Float;   -- sum of these weights = 1
+  time_filter: array(1..max_eng) of Boolean; -- 1-year filter in query ?
   name_lng  : array(1..max_lng) of Unbounded_String;
   name_lng_qry : array(1..max_lng) of Unbounded_String;
   name_eng  : array(1..max_eng) of Unbounded_String;
@@ -90,12 +91,14 @@ is
               CSV.Extract(le, fe, 3, True) & "%2B%22" & lng_qry & "%20programming%22";
             match: constant String := CSV.Extract(le, fe, 4, True);
             skip : constant Natural:= Integer'Value(CSV.Extract(le, fe, 5, True));
-            ko   : constant String:= CSV.Extract(le, fe, 6, True);
+            ko_word: constant String:= CSV.Extract(le, fe, 6, True);
+            filter : constant Boolean:= Boolean'Value(CSV.Extract(le, fe, 8, True));
           begin
             idx_eng:= idx_eng + 1;
             tot_eng:= Integer'Max(tot_eng, idx_eng);
             weight(idx_eng):= Integer'Value(CSV.Extract(le, fe, 2, True));
             name_eng(idx_eng):= U(eng);
+            time_filter(idx_eng):= filter;
             if Text_IO_Monitor then
               Put_Line(lng & " - " & eng & " - " & qry);
               Put_Line("   query: " & qry);
@@ -120,7 +123,7 @@ is
                 for count in 1 .. 1+skip loop
                   r:= 0;
                   while web(i) not in '0'..'9' loop
-                    if ko /= "" and then web(i..i+ko'Length-1) = ko then
+                    if ko_word /= "" and then web(i..i+ko_word'Length-1) = ko_word then
                       -- e.g. </div> in YouTube when no result
                       exit scan;
                     end if;
@@ -273,9 +276,15 @@ is
         htm:= htm & "<td></td>";
       end if;
     end loop;
-    htm:= htm & "<td>Average engine</td></tr>" & ASCII.LF & "<tr>";
-    for e in 1..tot_eng+3 loop
-      htm:= htm & "<td></td>";
+    htm:= htm &
+      "<td>Average engine</td></tr>" & ASCII.LF &
+      "<tr><td></td><td></td><td></td>";
+    for e in 1..tot_eng loop
+      if time_filter(e) then
+        htm:= htm & "<td>1-year filter</td>";
+      else
+        htm:= htm & "<td>no filter</td>";
+      end if;
     end loop;
     htm:= htm & "<td bgcolor=lightgreen>Normalized weight &rarr;</td>";
     for e in 1..tot_eng loop
