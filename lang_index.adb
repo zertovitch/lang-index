@@ -326,7 +326,7 @@ is
         "<td align=center>" & Pct(rank_avg_any_unsorted(l).value) & "</td>";
       htm:= htm & ASCII.LF;
     end loop;
-    htm:= htm & "</tr>" & ASCII.LF;
+    htm:= htm & "</tr></table>" & ASCII.LF;
     ----------------------------------
     -- HTML main tables for display --
     ----------------------------------
@@ -351,7 +351,7 @@ is
       end loop;
       grd:= grd & "</table></td>" & ASCII.LF;
     end loop;
-    grd:= grd & "</table>" & ASCII.LF;
+    grd:= grd & "</tr></table>" & ASCII.LF;
   end Report;
   --
 begin
