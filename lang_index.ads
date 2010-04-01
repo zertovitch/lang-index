@@ -41,4 +41,7 @@ package Lang_Index is
 
   procedure Store_statistics;
 
+  web       : constant String:= "http://lang-index.sf.net/";
+  -- hopefully the latest version is at that URL...  ---^
+
 end Lang_Index;

@@ -279,7 +279,7 @@ package body Lang_Index is
       htm : Unbounded_String renames HTML_details;
       grd : Unbounded_String renames HTML_table_categ;
       html_header: constant String:=
-        "<a href=http://sf.net/projects/lang-index/>Language Popularity Index</a>" &
+        "<a href=""" & web & """>Language Popularity Index</a>" &
         " - Web queries done on: " & time_str & "<br><br>";
       --
       function Category_Image(c: Category) return String is
