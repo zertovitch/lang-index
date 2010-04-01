@@ -73,7 +73,6 @@ package body Lang_Index is
   now: constant Time:= Clock;
   time_str: constant String:= Time_display(now, False);
 
-
   procedure Generate(
     HTML_table_categ   : out Unbounded_String; -- languages sorted by category
     HTML_details       : out Unbounded_String; -- details and where you can click the queries
@@ -282,6 +281,16 @@ package body Lang_Index is
       html_header: constant String:=
         "<a href=http://sf.net/projects/lang-index/>Language Popularity Index</a>" &
         " - Web queries done on: " & time_str & "<br><br>";
+      --
+      function Category_Image(c: Category) return String is
+      begin
+        case c is
+          when compiled =>
+            return "general-purpose and compiled";
+          when others   =>
+            return Category'Image(c);
+        end case;
+      end Category_Image;
     begin
       ------------------------------------
       -- HTML grid with details & links --
@@ -290,7 +299,7 @@ package body Lang_Index is
       htm:= U(
         html_header &
         "<table border=1>" &
-        "<td></td><td></td><td>Search engine &rarr;</td>" & ASCII.LF
+        "<td></td><td></td><td><b>Search engine &rarr;</b></td>" & ASCII.LF
       );
       for x in 1..2 loop
         for e in 1..tot_eng loop
@@ -316,7 +325,7 @@ package body Lang_Index is
           htm:= htm & "<td>no filter</td>";
         end if;
       end loop;
-      htm:= htm & "<td bgcolor=lightgreen>Normalized weight &rarr;</td>";
+      htm:= htm & "<td bgcolor=lightgreen><b>Normalized weight &rarr;</b></td>";
       for e in 1..tot_eng loop
         htm:= htm &
           "<td bgcolor=lightgreen align=center>" & Pct(norm_weight(e)) & "</td>";
@@ -324,11 +333,11 @@ package body Lang_Index is
       htm:= htm & "<td></td></tr>" & ASCII.LF;
       htm:= htm &
         "<tr><td>Language display name</td><td>Name in query</td>" &
-        "<td>&darr; Category</td>";
+        "<td><b>&darr; Category</b></td>";
       for e in 1..tot_eng loop
         htm:= htm & "<td align=center>Results</td>";
       end loop;
-      htm:= htm & "<td bgcolor=lightgray>&darr; Confidence</td>";
+      htm:= htm & "<td bgcolor=lightgray><b>&darr; Confidence</b></td>";
       for e in 1..tot_eng+1 loop
         htm:= htm & "<td align=center>Share</td>";
       end loop;
@@ -337,12 +346,12 @@ package body Lang_Index is
       for l in 1..tot_lng(any) loop
         htm:= htm &
           "<tr><td>" & name_lng(l) & "</td><td>" & name_lng_qry(l) & "</td><td>" &
-          To_Lower(Category'Image(lng_categ(l))) &
+          To_Lower(Category_Image(lng_categ(l))) &
           "</td>";
         for e in 1..tot_eng loop
           htm:= htm &
-            "<td align=center><a target=_blank href=" &
-            url(l,e) & ">" &
+            "<td align=center><a target=_blank href=""" &
+            url(l,e) & """>" &
             Integer'Image(hits(l,e)) &
             "</a></td>";
         end loop;
@@ -368,8 +377,9 @@ package body Lang_Index is
       for cat in Category loop
         -- Header
         grd:= grd &
-          "<td>Language category: <b>" & To_Lower(Category'Image(cat)) &
-          "</b> *<br><br><table border=1 cellspacing=2 cellpadding=2 bgcolor=white>" &
+          "<td>Language category:<b><br>" & To_Lower(Category_Image(cat)) &
+          "&nbsp; <a href=#categ>*)</a></b><br>" &
+          "<br><table border=1 cellspacing=2 cellpadding=2 bgcolor=white>" &
           "<tr><td>Rank</td><td>Name</td><td>Share</td>";
         -- Grid
         for lc in 1..tot_lng(cat) loop
