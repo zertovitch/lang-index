@@ -24,7 +24,6 @@
 
 with Ada.Text_IO;                       use Ada.Text_IO;
 with Ada.Float_Text_IO;                 use Ada.Float_Text_IO;
-with Ada.Calendar;                      use Ada.Calendar;
 with Ada.Containers.Generic_Array_Sort;
 with Ada.Characters.Handling;           use Ada.Characters.Handling;
 with Ada.Strings.Fixed;                 use Ada.Strings, Ada.Strings.Fixed;
@@ -333,7 +332,7 @@ package body Lang_Index is
       htm:= htm & "<td></td></tr>" & ASCII.LF;
       htm:= htm &
         "<tr><td>Language display name</td><td>Name in query</td>" &
-        "<td><b>&darr; Category</b></td>";
+        "<td><b>&darr; Category's short name</b></td>";
       for e in 1..tot_eng loop
         htm:= htm & "<td align=center>Results</td>";
       end loop;
@@ -346,7 +345,7 @@ package body Lang_Index is
       for l in 1..tot_lng(any) loop
         htm:= htm &
           "<tr><td>" & name_lng(l) & "</td><td>" & name_lng_qry(l) & "</td><td>" &
-          To_Lower(Category_Image(lng_categ(l))) &
+          To_Lower(Category'Image(lng_categ(l))) &
           "</td>";
         for e in 1..tot_eng loop
           htm:= htm &
@@ -400,9 +399,9 @@ package body Lang_Index is
     Report;
   end Generate;
 
-  procedure Store_statistics is
+  procedure Export_statistics is
   begin
-    null;
-  end Store_statistics;
+    null; -- tbd
+  end Export_statistics;
 
 end Lang_Index;

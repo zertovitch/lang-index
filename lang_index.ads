@@ -22,6 +22,7 @@
 --  this library; if not, write to  the  Free  Software  Foundation,  --
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.    --
 
+with Ada.Calendar;                      use Ada.Calendar;
 with Ada.Strings.Unbounded;             use Ada.Strings.Unbounded;
 
 package Lang_Index is
@@ -39,9 +40,26 @@ package Lang_Index is
   );
 
 
-  procedure Store_statistics;
+  generic
+    -- Export enough data to reproduce results
+    with procedure Export_detail(
+      language_name  : String;
+      engine_name    : String;
+      result_count   : Natural;
+      lng_confidence : Float; -- [0;1]
+      eng_weight     : Float; -- [0;1], sums to 1
+      time_of_query  : Time
+    );
+    -- Export result
+    with procedure Export_share(
+      language_name  : String;
+      categ_name     : String;
+      share          : Float; -- [0;1], sums to 1
+      time_of_query  : Time
+    );
+  procedure Export_statistics;
 
-  web       : constant String:= "http://lang-index.sf.net/";
-  -- hopefully the latest version is at that URL...  ---^
+  web: constant String:= "http://lang-index.sf.net/";
+  -- hopefully the latest version is at that URL...
 
 end Lang_Index;
