@@ -45,6 +45,7 @@ package Lang_Index is
     with procedure Export_detail(
       language_name  : String;
       engine_name    : String;
+      categ_name     : String;
       result_count   : Natural;
       lng_confidence : Float; -- [0;1]
       eng_weight     : Float; -- [0;1], sums to 1

@@ -401,7 +401,33 @@ package body Lang_Index is
 
   procedure Export_statistics is
   begin
-    null; -- tbd
+    -- Details.
+    -- Some informations here are pretty redundant,
+    -- like the confidence, weights.
+    for l in 1..tot_lng(any) loop
+      for e in 1..tot_eng loop
+        Export_detail(
+          S(name_lng(l)),
+          S(name_eng(e)),
+          To_Lower(Category'Image(lng_categ(l))),
+          hits(l,e),
+          Float(confidence(l)) / 100.0,
+          norm_weight(e),
+          now
+        );
+      end loop;
+    end loop;
+    -- "Hit parade"'s
+    for cat in Category loop
+      for lc in 1..tot_lng(cat) loop
+        Export_share(
+          S(name_lng(rank_avg(cat)(lc).index)),
+          To_Lower(Category'Image(cat)),
+          rank_avg(cat)(lc).value,
+          now
+        );
+      end loop;
+    end loop;
   end Export_statistics;
 
 end Lang_Index;

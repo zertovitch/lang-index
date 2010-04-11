@@ -35,6 +35,7 @@ procedure Lang_Index_to_Files is
   function U (Source : String) return Ada.Strings.Unbounded.Unbounded_String
     renames Ada.Strings.Unbounded.To_Unbounded_String;
   --
+
 begin
   Lang_Index.Generate(
     HTML_table_categ,
