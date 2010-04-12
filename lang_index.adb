@@ -72,6 +72,28 @@ package body Lang_Index is
   now: constant Time:= Clock;
   time_str: constant String:= Time_display(now, False);
 
+  function Replace_Google_Blogs_Special(q: String) return String is
+    with_date_last_year: constant String:=
+      "as_miny=" & Trim(Integer'Image(Year(now)-1), Left) &
+      "&as_minm=" & Trim(Integer'Image(Month(now)), Left) &
+      "&as_mind=" & Trim(Integer'Image(Day(now)), Left) & '&';
+    special: constant String:= "$google_blogs_special$";
+    idx: constant Natural:= Index(q, special);
+  begin
+    if idx = 0 then
+      return q;
+    else
+      -- replace "$google_blogs_special$" with
+      -- "&as_miny=2009&as_minm=4&as_mind=12" (appropriate date, of course)
+      return Replace_Slice(
+        Source => q,
+        Low    => idx,
+        High   => idx+special'Length-1,
+        By     => with_date_last_year
+      );
+    end if;
+  end;
+
   procedure Generate(
     HTML_table_categ   : out Unbounded_String; -- languages sorted by category
     HTML_details       : out Unbounded_String; -- details and where you can click the queries
@@ -115,8 +137,9 @@ package body Lang_Index is
               le : constant String:= Get_Line(e);
               fe : constant CSV.Fields_Bounds:= CSV.Get_Bounds(le, sep);
               eng: constant String:= CSV.Extract(le, fe, 1, True);
-              qry: constant String:=
+              qry_0: constant String:=
                 CSV.Extract(le, fe, 3, True) & "%2B%22" & lng_qry & "%20programming%22";
+              qry: constant String:= Replace_Google_Blogs_Special(qry_0);
               match: constant String := CSV.Extract(le, fe, 4, True);
               skip : constant Natural:= Integer'Value(CSV.Extract(le, fe, 5, True));
               ko_word: constant String:= CSV.Extract(le, fe, 6, True);
