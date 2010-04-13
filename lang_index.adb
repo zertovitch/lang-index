@@ -110,6 +110,8 @@ package body Lang_Index is
     procedure Gathering is
       l, e: File_Type;
       idx_lng : Natural:= 0;
+      type Result_type is (ok, no_match, aws_error);
+      outcome: array(Result_type) of Natural:= (0,0,0);
     begin
       Open(l, In_File, "l.csv"); -- Open the language file
       Skip_Line(l); -- header
@@ -121,7 +123,6 @@ package body Lang_Index is
           lng_qry: constant String:= CSV.Extract(ll, fl, 2, True);
           cat    : constant String:= CSV.Extract(ll, fl, 3, True);
           idx_eng: Natural:= 0;
-          type Result_type is (ok, no_match, aws_error);
           result: Result_type;
         begin
           idx_lng:= idx_lng + 1;
@@ -206,11 +207,21 @@ package body Lang_Index is
               Put_Line("   hits :" & Integer'Image(hits(idx_lng, idx_eng)));
               New_Line;
             end if;
+            outcome(result):= outcome(result) + 1;
           end loop;
           Close(e);
         end;
       end loop;
       Close(l);
+      if Text_IO_Monitor then
+        Put_Line("--------------- Done with queries --------------");
+        for r in outcome'Range loop
+          Put_Line(
+            "Web pages with outcome... " &
+            Result_type'Image(r) & ':' & Integer'Image(outcome(r))
+          );
+        end loop;
+      end if;
     end Gathering;
 
     ----------------

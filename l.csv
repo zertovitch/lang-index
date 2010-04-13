@@ -33,7 +33,7 @@ Go;Go;Compiled;100;;;
 Groovy;Groovy;Script;100
 Haskell;Haskell;Compiled;100
 Icon;Icon;Compiled;100
-Informix/4GL;Informix/4GL;Other;100
+Informix/4GL;Informix%2F4GL;Other;100
 IDL;IDL;Script;100
 io;io;Script;100
 J;J;Script;100
@@ -50,7 +50,7 @@ MAD;MAD;Compiled;45;;24.03.2010
 Maple;Maple;Script;100;;
 Mathematica;Mathematica;Script;100;;
 MATLAB;MATLAB;Script;100;;
-MAX/MSP;MAX/MSP;Script;100;;
+MAX/MSP;MAX%2FMSP;Script;100;;
 Metafont;Metafont;Script;100;;
 ML;ML;Compiled;100;;
 Modula-2;Modula%2D2;Compiled;100;;
@@ -66,8 +66,8 @@ Oz;Oz;Script;100;;
 Pascal;Pascal;Compiled;100;;
 Perl;Perl;Script;100;;
 PHP;PHP;Script;100;;
-PL/I;PL/I;Compiled;100;;
-PL/SQL;PL/SQL;Other;100;;
+PL/I;PL%2FI;Compiled;100;;
+PL/SQL;PL%2FSQL;Other;100;;
 PowerBuilder / PowerShell;PowerShell;Script;100;;
 PostScript;PostScript;Script;100;;
 Progress;Progress;Other;100;;
@@ -86,7 +86,7 @@ SISAL;SISAL;Compiled;100;;24.03.2010
 S-lang;S%2Dlang;Script;100;;
 Smalltalk;Smalltalk;Compiled;100;;
 SuperCollider;SuperCollider;Compiled;100;;
-Tcl/Tk;Tcl/Tk;Script;100;;
+Tcl/Tk;Tcl%2FTk;Script;100;;
 TeX / LaTeX;TeX;Script;100;;
 Transact-SQL;Transact%2DSQL;Other;100;;
 VBScript;VBScript;Script;100;;
