@@ -208,6 +208,7 @@ package body Lang_Index is
               New_Line;
             end if;
             outcome(result):= outcome(result) + 1;
+            delay 2.345;
           end loop;
           Close(e);
         end;
@@ -215,6 +216,8 @@ package body Lang_Index is
       Close(l);
       if Text_IO_Monitor then
         Put_Line("--------------- Done with queries --------------");
+        Put_Line("Engines  :" & Integer'Image(tot_eng));
+        Put_Line("Languages:" & Integer'Image(tot_lng(any)));
         for r in outcome'Range loop
           Put_Line(
             "Web pages with outcome... " &
@@ -305,7 +308,7 @@ package body Lang_Index is
       function Pct(f: Float) return String is
         str: String:= "          ";
       begin
-        Put(str, 100.0 * f,2,0);
+        Put(str, 100.0 * f, 3,0);
         return Trim(str,Left) & '%';
       end Pct;
       --
