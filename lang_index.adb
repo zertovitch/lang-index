@@ -208,7 +208,7 @@ package body Lang_Index is
               New_Line;
             end if;
             outcome(result):= outcome(result) + 1;
-            delay 2.345;
+            delay 1.2345;
           end loop;
           Close(e);
         end;
@@ -316,7 +316,7 @@ package body Lang_Index is
       grd : Unbounded_String renames HTML_table_categ;
       html_header: constant String:=
         "<a href=""" & web & """>Language Popularity Index</a>" &
-        " - Web queries done on: " & time_str & "<br><br>";
+        " - Web queries done on: " & time_str & "<br><br>" & ASCII.LF;
       --
       function Category_Image(c: Category) return String is
       begin
@@ -334,7 +334,7 @@ package body Lang_Index is
       -- Header
       htm:= U(
         html_header &
-        "<table border=1>" &
+        "<font face=""Calibri, Tahoma, Arial""><table border=1>" &
         "<td></td><td></td><td><b>Search engine &rarr;</b></td>" & ASCII.LF
       );
       for x in 1..2 loop
@@ -373,7 +373,7 @@ package body Lang_Index is
       for e in 1..tot_eng loop
         htm:= htm & "<td align=center>Results</td>";
       end loop;
-      htm:= htm & "<td bgcolor=lightgray><b>&darr; Confidence</b></td>";
+      htm:= htm & "<td bgcolor=#D3D3D3><b>&darr; Confidence</b></td>";
       for e in 1..tot_eng+1 loop
         htm:= htm & "<td align=center>Share</td>";
       end loop;
@@ -392,7 +392,7 @@ package body Lang_Index is
             "</a></td>";
         end loop;
         htm:= htm &
-          "<td bgcolor=lightgray>" & Integer'Image(confidence(l)) & "%</td>";
+          "<td bgcolor=#D3D3D3>" & Integer'Image(confidence(l)) & "%</td>";
         for e in 1..tot_eng loop
           htm:= htm &
             "<td align=center>" & Pct(rank_eng(l,e)) & "</td>";
@@ -401,14 +401,14 @@ package body Lang_Index is
           "<td align=center>" & Pct(rank_avg_any_unsorted(l).value) & "</td>";
         htm:= htm & ASCII.LF;
       end loop;
-      htm:= htm & "</tr></table>" & ASCII.LF;
+      htm:= htm & "</tr></table></font>" & ASCII.LF;
       ----------------------------------
       -- HTML main tables for display --
       ----------------------------------
       grd:= U(
         html_header &
-        "<table border=1 cellspacing=5 cellpadding=5>" &
-        "<tr valign=top bgcolor=lightgray>" & ASCII.LF
+        "<font face=""Calibri, Tahoma, Arial""><table border=1 cellspacing=5 cellpadding=5>" &
+        "<tr valign=top bgcolor=#D3D3D3>" & ASCII.LF
       );
       for cat in Category loop
         -- Header
@@ -427,7 +427,7 @@ package body Lang_Index is
         end loop;
         grd:= grd & "</table></td>" & ASCII.LF;
       end loop;
-      grd:= grd & "</tr></table>" & ASCII.LF;
+      grd:= grd & "</tr></table></font>" & ASCII.LF;
     end Report;
     --
   begin

@@ -9,9 +9,9 @@ AppleScript;AppleScript;Script;100;;;
 Awk;Awk;Script;100;;;
 Basic;Basic;Compiled;97;"some ""basic programming concepts"" etc.";23.03.2010;Google
 Bourne shell;Bash;Script;100;;;
-C;C;Compiled;97;See C-- sheet;23.03.2010;Google
+C;C;Compiled;86;See C++ sheet;19.04.2010;Clusty+Google
 C#;C%23;Compiled;100;;;
-C++;C%2B%2B;Compiled;90;See C-- sheet;23.03.2010;Clusty
+C++;C%2B%2B;Compiled;85;See C++ sheet;19.04.2010;Clusty+Google
 Caml/F#;F%20sharp;Compiled;100;;;
 CL (OS/400);CL;Script;100;;;
 Clipper;Clipper;Compiled;100;;;
@@ -92,7 +92,7 @@ SuperCollider;SuperCollider;Compiled;100;;
 Tcl/Tk;Tcl%2FTk;Script;100;;
 TeX / LaTeX;TeX;Script;100;;
 Transact-SQL;Transact%2DSQL;Other;100;;
-Vala;Vala;Compiled;100;;24.03.2010
+Vala;Vala;Compiled;100;;
 VBScript;VBScript;Script;100;;
 Verilog;Verilog;Other;100
 VHDL;VHDL;Other;100
