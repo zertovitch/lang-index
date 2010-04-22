@@ -5,9 +5,20 @@
 -- using various search engines (see e.csv) about various programming
 -- languages (see l.csv). All details are configured and explained
 -- in search.xls which contains the sheets for e.csv and l.csv.
-
+--
+-- Simply said, Lang_Index.Generate does the following tasks:
+-- 1) gather result counts for each pair {language, engine}
+-- 2) apply to them a given confidence factor per language
+-- 3) establish one language market share list per search engine
+-- 4) establish a market share list, averaged over the search engines,
+--     using given weights
+-- 5) establish one conditional market share list per language category
+--
+-- Results of steps 1) to 4) appear from left to right in the detailed
+-- HTML table (HTML_details); results of step 5) appear in HTML_table_categ.
+--
 -- Legal licensing note:
-
+--
 --  Copyright (c) 2010 Gautier de Montmollin
 --
 --  This  library  is  free software; you can redistribute it and/or  --
@@ -96,7 +107,7 @@ package body Lang_Index is
 
   procedure Generate(
     HTML_table_categ   : out Unbounded_String; -- languages sorted by category
-    HTML_details       : out Unbounded_String; -- details and where you can click the queries
+    HTML_details       : out Unbounded_String; -- details and links where you can click the queries
     Text_IO_Monitor    : Boolean:= True;
     -- ^-- only for debug, and with console available
     Dump_when_no_match : Boolean:= True
@@ -369,11 +380,11 @@ package body Lang_Index is
       htm:= htm & "<td></td></tr>" & ASCII.LF;
       htm:= htm &
         "<tr><td>Language display name</td><td>Name in query</td>" &
-        "<td><b>&darr; Category's short name</b></td>";
+        "<td><b>Category's short name &darr;</b></td>";
       for e in 1..tot_eng loop
         htm:= htm & "<td align=center>Results</td>";
       end loop;
-      htm:= htm & "<td bgcolor=#D3D3D3><b>&darr; Confidence</b></td>";
+      htm:= htm & "<td bgcolor=#D3D3D3><b>Confidence &darr;</b></td>";
       for e in 1..tot_eng+1 loop
         htm:= htm & "<td align=center>Share</td>";
       end loop;

@@ -1,0 +1,51 @@
+Language Popularity Index
+-------------------------
+The package Lang_Index provides a fully automatic gathering of data
+using various search engines (see e.csv) about various programming
+languages (see l.csv). All details are configured and explained
+in search.xls which contains the sheets for e.csv and l.csv.
+
+Simply said, Lang_Index.Generate does the following tasks:
+1) gather result counts for each pair {language, engine}
+2) apply to them a given confidence factor per language
+3) establish one language market share list per search engine
+4) establish a market share list, averaged over the search engines,
+     using given weights
+5) establish one conditional market share list per language category
+
+Results of steps 1) to 4) appear from left to right in the detailed
+HTML table (HTML_details); results of step 5) appear in HTML_table_categ.
+
+Prerequisites
+-------------
+Lang_Index depends, for its HTTP query, on the Ada Web Server (AWS) project.
+A free version of AWS can be found here:
+http://libre.adacore.com/libre/tools/aws/
+
+Files
+-----
+lang_index.ads             Lang_Index package (spec)
+lang_index.adb             Lang_Index package (body)
+lang_index_to_files.adb    Lang_Index_to_Files standalone application
+search.xls                 An Excel workbook containing all data and
+                             parameters which are not hard-coded, that is
+                             almost everything!
+Web
+---
+http://lang-index.sf.net/
+
+Legal licensing note
+--------------------
+Copyright (c) 2010 Gautier de Montmollin
+
+This  library  is  free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public  License  as
+published by the Free Software Foundation; either version  2  of
+the License, or (at your option) any later version. This library
+is distributed in the hope that it will be useful,  but  WITHOUT
+ANY   WARRANTY;   without   even   the   implied   warranty   of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General  Public  License  for  more  details.  You  should  have
+received  a  copy  of  the GNU General Public License along with
+this library; if not, write to  the  Free  Software  Foundation,
+Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
