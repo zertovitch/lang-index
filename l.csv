@@ -17,7 +17,7 @@ CL (OS/400);CL;Script;100;;;
 Clipper;Clipper;Compiled;100;;;
 COBOL;COBOL;Other;100;;;
 ColdFusion;ColdFusion;Script;100;;;
-D;D;Compiled;100;ok;23.03.2010;Clusty
+D;D;Compiled;77;Many 3-D, chapter enum's, etc. in Google search ;26.04.2010;Clusty+Google
 Delphi;Delphi;Compiled;100;;;
 Dylan;Dylan;Compiled;100;;;
 Eiffel;Eiffel;Compiled;100;;;
@@ -71,8 +71,9 @@ Perl;Perl;Script;100;;
 PHP;PHP;Script;100;;
 PL/I;PL%2FI;Compiled;100;;
 PL/SQL;PL%2FSQL;Other;100;;
-PowerBuilder / PowerShell;PowerShell;Script;100;;
 PostScript;PostScript;Script;100;;
+PowerBuilder;PowerBuilder;Script;100;;
+PowerShell;PowerShell;Script;100;;
 Progress;Progress;Other;100;;
 Prolog;Prolog;Other;100;;
 Python;Python;Script;100;;
@@ -93,7 +94,7 @@ Tcl/Tk;Tcl%2FTk;Script;100;;
 TeX / LaTeX;TeX;Script;100;;
 Transact-SQL;Transact%2DSQL;Other;100;;
 Vala;Vala;Compiled;100;;
-VBScript;VBScript;Script;100;;
+VBScript;VBScript;Script;100
 Verilog;Verilog;Other;100
 VHDL;VHDL;Other;100
 XSLT;XSLT;Compiled;100
