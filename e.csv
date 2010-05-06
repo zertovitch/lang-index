@@ -1,5 +1,5 @@
 Engine;Weight;Query;Find figure after…;Figures to skip after the key;When no match, give up after…;Test;1-Year filter
-Google;23;http://www.google.com/search?tbs=qdr:y&q=;<b>10</b>;0;;http://www.google.com/search?tbs=qdr:y&q=%2B%22Ada%20programming%22;true
+Google;23;http://www.google.com/search?tbs=qdr:y&q=;resultStats>;0;;http://www.google.com/search?tbs=qdr:y&q=%2B%22Ada%20programming%22;true
 Yahoo!;23;http://search.yahoo.com/search?vd=y&q=;"""resultCount"">";0;;http://search.yahoo.com/search?vd=y&q=%2B%22Ada%20programming%22;true
 Google Blogs;23;http://blogsearch.google.com/blogsearch?$google_blogs_special$as_drrb=b&as_q=;<b>10</b>;0;;http://blogsearch.google.com/blogsearch?$google_blogs_special$as_drrb=b&as_q=%2B%22Ada%20programming%22;true
 Wikipedia;23;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=;</b> of <b>;0;;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=%2B%22Ada%20programming%22;false
