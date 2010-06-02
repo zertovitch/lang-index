@@ -175,19 +175,28 @@ package body Lang_Index is
                 tok_i: Integer;
                 i: Positive;
                 r: Natural;
+                figure: array(1..1+skip) of Natural;
               begin
                 tok_i:= Index(web, match);
                 if tok_i = 0 then
                   result:= no_match;
-                  hits(idx_lng, idx_eng):= 0;
+                  r:= 0;
                 else
                   i:= tok_i + match'Length;
                   scan:
-                  for count in 1 .. 1+skip loop
+                  for count in figure'Range loop
                     r:= 0;
                     while web(i) not in '0'..'9' loop
                       if ko_word /= "" and then web(i..i+ko_word'Length-1) = ko_word then
+                        if Text_IO_Monitor then
+                          Put("Escaping after figures: ");
+                          for x in 1..count-1 loop
+                            Put(Integer'Image(figure(x)) & ',');
+                          end loop;
+                          New_Line;
+                        end if;
                         -- e.g. </div> in YouTube when no result
+                        result:= no_match;
                         exit scan;
                       end if;
                       i:= i + 1;
@@ -197,12 +206,19 @@ package body Lang_Index is
                         r:= r * 10 + Integer'Value(web(i) & "");
                       end if;
                       i:= i + 1;
-                      exit when web(i) = '<' or web(i)=' ';
-                      -- give up at next tag or space
+                      case web(i) is
+                        when '<' | ' ' | Character'Val(16#A0#) =>
+                          exit; -- anything that can separate numbers
+                                -- give up at next tag or space
+                        when others =>
+                          null; -- anything else might be part of a number
+                                -- (like some thousands separator)
+                      end case;
                     end loop;
+                    figure(count):= r;
                   end loop scan;
-                  hits(idx_lng, idx_eng):= r;
                 end if;
+                hits(idx_lng, idx_eng):= r;
                 if Dump_when_no_match and result = no_match then
                   Create(dump, Out_File, "No_match_" & lng_qry & '_' & eng & ".html");
                   Put(dump, web);
