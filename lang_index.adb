@@ -284,7 +284,11 @@ package body Lang_Index is
           total_hits(e):= total_hits(e) + plausible_hits(l,e);
         end loop;
         for l in 1..tot_lng(any) loop
-          rank_eng(l,e):= plausible_hits(l,e) / Float(total_hits(e));
+          if total_hits(e) > 0.0 then
+            rank_eng(l,e):= plausible_hits(l,e) / total_hits(e);
+          else
+            rank_eng(l,e):= 0.0; -- for this language l, there was no hit at all
+          end if;
         end loop;
       end loop;
       -- Normalized weights
