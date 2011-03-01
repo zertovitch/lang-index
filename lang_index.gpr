@@ -4,7 +4,7 @@
 --
 project Lang_Index is
 
-   for Main use ("lang_index_to_files.adb");
+   for Main use ("lang_index_to_files.adb", "lang_index_to_files_and_db.adb");
    for Source_Dirs use (".", "aws_stuff");
    for Exec_Dir use ".";
    type Build_Mode_Type is
@@ -29,10 +29,10 @@ project Lang_Index is
       case Build_Mode is
 
          when "Debug" =>
-            for Default_Switches ("ada") use ("-gnatVa", "-gnato", "-g", "-fstack-check");
+            for Default_Switches ("ada") use ("-gnat05", "-gnatVa", "-gnato", "-g", "-fstack-check");
 
          when "Small" =>
-            for Default_Switches ("ada") use ("-gnatp", "-Os", "-ffunction-sections");
+            for Default_Switches ("ada") use ("-gnat05", "-gnatp", "-Os", "-ffunction-sections");
       end case;
    end Compiler;
 

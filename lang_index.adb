@@ -343,25 +343,26 @@ package body Lang_Index is
         return Trim(str,Left) & '%';
       end Pct;
       function Sep1000(i: Natural) return String is
-        str: String:= (1..13); -- "1_000_000_000"
-        l: Natural:= str'First-1;
+        str: String(1..13); -- "1_000_000_000"
+        l: Natural:= str'Last+1; -- we go from right to left - arabic numbers!
         c: Natural:= 0;
         j: Integer:= i;
       begin
         if i = 0 then
           return "0";
         end if;
-        while j > 0 loop
-          l:= l + 1;
+        loop
+          l:= l - 1;
           str(l):= Character'Val(j mod 10 + Character'Pos('0'));
-          c:= c + 1
+          c:= c + 1;
+          j:= j / 10;
+          exit when j = 0;
           if c mod 3 = 0 then
-            l:= l + 1;
+            l:= l - 1;
             str(l):= ' ';
           end if;
-          j:= j / 10;
         end loop;
-        return str(1..l);
+        return str(l..str'Last);
       end Sep1000;
       --
       htm : Unbounded_String renames HTML_details;
