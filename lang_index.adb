@@ -342,6 +342,27 @@ package body Lang_Index is
         Put(str, 100.0 * f, 3,0);
         return Trim(str,Left) & '%';
       end Pct;
+      function Sep1000(i: Natural) return String is
+        str: String:= (1..13); -- "1_000_000_000"
+        l: Natural:= str'First-1;
+        c: Natural:= 0;
+        j: Integer:= i;
+      begin
+        if i = 0 then
+          return "0";
+        end if;
+        while j > 0 loop
+          l:= l + 1;
+          str(l):= Character'Val(j mod 10 + Character'Pos('0'));
+          c:= c + 1
+          if c mod 3 = 0 then
+            l:= l + 1;
+            str(l):= ' ';
+          end if;
+          j:= j / 10;
+        end loop;
+        return str(1..l);
+      end Sep1000;
       --
       htm : Unbounded_String renames HTML_details;
       grd : Unbounded_String renames HTML_table_categ;
@@ -419,7 +440,7 @@ package body Lang_Index is
           htm:= htm &
             "<td align=center><a target=_blank href=""" &
             url(l,e) & """>" &
-            Integer'Image(hits(l,e)) &
+            Sep1000(hits(l,e)) &
             "</a></td>";
         end loop;
         htm:= htm &
