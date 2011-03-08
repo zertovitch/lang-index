@@ -342,8 +342,10 @@ package body Lang_Index is
         Put(str, 100.0 * f, 3,0);
         return Trim(str,Left) & '%';
       end Pct;
+      --
       function Sep1000(i: Natural) return String is
-        str: String(1..13); -- "1_000_000_000"
+        nbsp: constant String:= "&nbsp;";
+        str: String(1..10+3*nbsp'Length); -- "1_000_000_000"
         l: Natural:= str'Last+1; -- we go from right to left - arabic numbers!
         c: Natural:= 0;
         j: Integer:= i;
@@ -358,8 +360,10 @@ package body Lang_Index is
           j:= j / 10;
           exit when j = 0;
           if c mod 3 = 0 then
-            l:= l - 1;
-            str(l):= ' ';
+            for k in reverse nbsp'Range loop
+              l:= l - 1;
+              str(l):= nbsp(k);
+            end loop;
           end if;
         end loop;
         return str(l..str'Last);
