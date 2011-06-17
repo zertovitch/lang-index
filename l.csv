@@ -8,6 +8,7 @@ APL;APL;Script;100;;;
 AppleScript;AppleScript;Script;100;;;
 Awk;Awk;Script;100;;;
 Basic;Basic;Compiled;97;"some ""basic programming concepts"" etc.";23.03.2010;Google
+Boo;Boo;Compiled;100;-- Contrib by Antonio Maniero;15.06.2011;
 Bourne shell;Bash;Script;100;;;
 C;C;Compiled;86;See C++ sheet;19.04.2010;Clusty+Google
 C#;C%23;Compiled;100;;;
@@ -15,6 +16,7 @@ C++;C%2B%2B;Compiled;85;See C++ sheet;19.04.2010;Clusty+Google
 Caml/F#;F%20sharp;Compiled;100;;;
 CL (OS/400);CL;Script;100;;;
 Clipper;Clipper;Compiled;100;;;
+Clojure;Clojure;Script;100;-- Contrib by Antonio Maniero;15.06.2011;
 COBOL;COBOL;Other;100;;;
 ColdFusion;ColdFusion;Script;100;;;
 D;D;Compiled;77;Many 3-D, chapter enum's, etc. in Google search ;26.04.2010;Clusty+Google
@@ -25,6 +27,7 @@ Erlang;Erlang;Compiled;100;;;
 Euphoria;Euphoria;Compiled;100;;;
 Factor;Factor;Compiled;100;;;
 Falcon;Falcon;Script;100;;;
+Fantom;Fantom;Compiled;100;-- Contrib by Antonio Maniero;15.06.2011;
 Focus;Focus;Other;100;;;
 Forth;Forth;Compiled;100;;;
 Fortran;Fortran;Compiled;100;;;
@@ -60,6 +63,7 @@ Modula-2;Modula%2D2;Compiled;100;;;
 Modula-3;Modula%2D3;Compiled;100;;;
 MUMPS;MUMPS;Other;100;;;
 Natural;Natural;Other;45;;23.03.2010;
+Nemerle;Nemerle;Compiled;100;-- Contrib by Antonio Maniero;15.06.2011;
 NXT-G;NXT%2DG;Script;100;;;
 Oberon;Oberon;Compiled;100;;;
 Objective-C;Objective%2DC;Compiled;100;;;
