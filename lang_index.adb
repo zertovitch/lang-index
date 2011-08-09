@@ -379,7 +379,7 @@ package body Lang_Index is
       begin
         case c is
           when compiled =>
-            return "general-purpose and compiled";
+            return "general-purpose";
           when others   =>
             return Category'Image(c);
         end case;
