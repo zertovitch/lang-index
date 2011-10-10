@@ -439,7 +439,7 @@ package body Lang_Index is
       for l in 1..tot_lng(any) loop
         htm:= htm &
           "<tr><td>" & name_lng(l) & "</td><td>" & name_lng_qry(l) & "</td><td>" &
-          To_Lower(Category'Image(lng_categ(l))) &
+          To_Lower(Category_Image(lng_categ(l))) &
           "</td>";
         for e in 1..tot_eng loop
           htm:= htm &
