@@ -47,7 +47,7 @@ package Lang_Index is
     HTML_details       : out Unbounded_String; -- details and links where you can click the queries
     Text_IO_Monitor    : Boolean:= True;
     -- ^-- only for debug, and with console available
-    Dump_when_no_match : Boolean:= True
+    Dump_pages : Boolean:= True
   );
 
 

@@ -19,7 +19,7 @@
 --
 -- Legal licensing note:
 --
---  Copyright (c) 2010 Gautier de Montmollin
+--  Copyright (c) 2010..2011 Gautier de Montmollin
 --
 --  This  library  is  free software; you can redistribute it and/or  --
 --  modify it under the terms of the GNU General Public  License  as  --
@@ -37,6 +37,7 @@ with Ada.Text_IO;                       use Ada.Text_IO;
 with Ada.Float_Text_IO;                 use Ada.Float_Text_IO;
 with Ada.Containers.Generic_Array_Sort;
 with Ada.Characters.Handling;           use Ada.Characters.Handling;
+with Ada.Directories;                   use Ada.Directories;
 with Ada.Strings.Fixed;                 use Ada.Strings, Ada.Strings.Fixed;
 
 with CSV, Time_display;
@@ -110,7 +111,7 @@ package body Lang_Index is
     HTML_details       : out Unbounded_String; -- details and links where you can click the queries
     Text_IO_Monitor    : Boolean:= True;
     -- ^-- only for debug, and with console available
-    Dump_when_no_match : Boolean:= True
+    Dump_pages : Boolean:= True
   )
   is
 
@@ -124,6 +125,8 @@ package body Lang_Index is
       type Result_type is (ok, no_match, aws_error);
       outcome: array(Result_type) of Natural:= (0,0,0);
     begin
+      Create_Path("match");
+      Create_Path("no_match");
       Open(l, In_File, "l.csv"); -- Open the language file
       Skip_Line(l); -- header
       while not End_Of_File(l) loop
@@ -219,10 +222,19 @@ package body Lang_Index is
                   end loop scan;
                 end if;
                 hits(idx_lng, idx_eng):= r;
-                if Dump_when_no_match and result = no_match then
-                  Create(dump, Out_File, "No_match_" & lng_qry & '_' & eng & ".html");
-                  Put(dump, web);
-                  Close(dump);
+                if Dump_pages then
+                  case result is
+                    when ok =>
+                      Create(dump, Out_File, "match/" & lng_qry & '_' & eng & ".html");
+                      Put(dump, web);
+                      Close(dump);
+                    when no_match =>
+                      Create(dump, Out_File, "no_match/" & lng_qry & '_' & eng & ".html");
+                      Put(dump, web);
+                      Close(dump);
+                    when aws_error =>
+                      null;
+                  end case;
                 end if;
               end;
             exception
