@@ -204,6 +204,7 @@ package body Lang_Index is
                       end if;
                       i:= i + 1;
                     end loop;
+                    collect_digits:
                     loop
                       if web(i) in '0'..'9' then
                         r:= r * 10 + Integer'Value(web(i) & "");
@@ -211,13 +212,17 @@ package body Lang_Index is
                       i:= i + 1;
                       case web(i) is
                         when '<' | ' ' | Character'Val(16#A0#) =>
-                          exit; -- anything that can separate numbers
-                                -- give up at next tag or space
+                          -- anything that can separate numbers
+                          if web(i) = ' ' and web(i+1) in '0'..'9' then
+                            null; -- we have a spacing as thousands separator
+                          else
+                            exit collect_digits; -- give up at next tag or spacing
+                          end if;
                         when others =>
                           null; -- anything else might be part of a number
                                 -- (like some thousands separator)
                       end case;
-                    end loop;
+                    end loop collect_digits;
                     figure(count):= r;
                   end loop scan;
                 end if;
