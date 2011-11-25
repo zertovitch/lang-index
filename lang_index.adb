@@ -158,7 +158,7 @@ package body Lang_Index is
               match: constant String := CSV.Extract(le, fe, 4, True);
               skip : constant Natural:= Integer'Value(CSV.Extract(le, fe, 5, True));
               ko_word: constant String:= CSV.Extract(le, fe, 6, True);
-              filter : constant Boolean:= Boolean'Value(CSV.Extract(le, fe, 8, True));
+              filter : constant Boolean:= Boolean'Value(CSV.Extract(le, fe, 7, True));
             begin
               idx_eng:= idx_eng + 1;
               tot_eng:= Integer'Max(tot_eng, idx_eng);
