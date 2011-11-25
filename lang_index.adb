@@ -178,21 +178,23 @@ package body Lang_Index is
                 tok_i: Integer;
                 i: Positive;
                 r: Natural;
-                figure: array(1..1+skip) of Natural;
+                figure: array(1..1+skip) of Natural:= (others => 1234);
+                spec_char: Boolean; -- &nbsp; or &#233; with a figure in it!
               begin
                 tok_i:= Index(web, match);
                 if tok_i = 0 then
                   result:= no_match;
                   r:= 0;
-                else
+                else -- token found
                   i:= tok_i + match'Length;
+                  spec_char:= False;
                   scan:
                   for count in figure'Range loop
                     r:= 0;
-                    while web(i) not in '0'..'9' loop
+                    while (web(i) not in '0'..'9') or spec_char loop
                       if ko_word /= "" and then web(i..i+ko_word'Length-1) = ko_word then
                         if Text_IO_Monitor then
-                          Put("Escaping after figures: ");
+                          Put("Escaping after the following figures: ");
                           for x in 1..count-1 loop
                             Put(Integer'Image(figure(x)) & ',');
                           end loop;
@@ -202,6 +204,20 @@ package body Lang_Index is
                         result:= no_match;
                         exit scan;
                       end if;
+                      case web(i) is
+                        when '&' =>
+                          spec_char:= True;
+                          if Text_IO_Monitor then
+                            Put("[Spec char on]");
+                          end if;
+                        when ';' =>
+                          spec_char:= False;
+                          if Text_IO_Monitor then
+                            Put("[Spec char off]");
+                          end if;
+                        when others =>
+                          null;
+                      end case;
                       i:= i + 1;
                     end loop;
                     collect_digits:
@@ -211,10 +227,11 @@ package body Lang_Index is
                       end if;
                       i:= i + 1;
                       case web(i) is
-                        when '<' | ' ' | Character'Val(16#A0#) =>
-                          -- anything that can separate numbers
+                        when '<' | ' ' | '-' | Character'Val(16#A0#) =>
+                          -- ^ anything that might separate numbers
                           if web(i) = ' ' and web(i+1) in '0'..'9' then
-                            null; -- we have a spacing as thousands separator
+                            null;
+                            -- special case: we have a spacing as thousands separator
                           else
                             exit collect_digits; -- give up at next tag or spacing
                           end if;
@@ -224,6 +241,9 @@ package body Lang_Index is
                       end case;
                     end loop collect_digits;
                     figure(count):= r;
+                    if Text_IO_Monitor then
+                      Put_Line("[figure number" & Integer'Image(count) & " is" & Integer'Image(r) & ']');
+                    end if;
                   end loop scan;
                 end if;
                 hits(idx_lng, idx_eng):= r;
