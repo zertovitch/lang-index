@@ -34,13 +34,13 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.    --
 
 with Ada.Text_IO;                       use Ada.Text_IO;
-with Ada.Float_Text_IO;                 use Ada.Float_Text_IO;
+with Ada.Float_Text_IO;
 with Ada.Containers.Generic_Array_Sort;
 with Ada.Characters.Handling;           use Ada.Characters.Handling;
 with Ada.Directories;                   use Ada.Directories;
 with Ada.Strings.Fixed;                 use Ada.Strings, Ada.Strings.Fixed;
 
-with CSV, Time_display;
+with CSV, Dual_IO, Time_display;
 
 with AWS.Client, AWS.Response;
 
@@ -104,7 +104,7 @@ package body Lang_Index is
         By     => with_date_last_year
       );
     end if;
-  end;
+  end Replace_Google_Blogs_Special;
 
   procedure Generate(
     HTML_table_categ   : out Unbounded_String; -- languages sorted by category
@@ -124,7 +124,37 @@ package body Lang_Index is
       idx_lng : Natural:= 0;
       type Result_type is (ok, no_match, aws_error);
       outcome: array(Result_type) of Natural:= (0,0,0);
+      use Dual_IO;
+      --
+      function Get_HTML(url: String) return String is
+        timeout_msg: constant String:= "Get Timeout";
+        attempts: constant:= 4;
+      begin
+        for attempt in 1..attempts loop
+          declare
+            html: constant String:= AWS.Response.Message_Body(AWS.Client.Get(url));
+          begin
+            if html /= timeout_msg then
+              return html;
+            end if;
+            if attempt < attempts then
+              if Text_IO_Monitor then
+                Dual_IO.Put_Line("Timeout from site, waiting a bit...");
+              end if;
+              delay 10.0 * attempt;
+            end if;
+          end;
+        end loop;
+        if Text_IO_Monitor then
+          Dual_IO.Put_Line("Recurrent timeout after" & Integer'Image(attempts) & " attempts");
+        end if;
+        return "Got """ & timeout_msg & """ after" & Integer'Image(attempts) & " attempts";
+      end Get_HTML;
+      --
     begin
+      if Text_IO_Monitor then
+        Dual_IO.Create_Log("lang_index.log");
+      end if;
       Create_Path("match");
       Create_Path("no_match");
       Open(l, In_File, "l.csv"); -- Open the language file
@@ -166,14 +196,13 @@ package body Lang_Index is
               name_eng(idx_eng):= U(eng);
               time_filter(idx_eng):= filter;
               if Text_IO_Monitor then
-                Put_Line(lng & " - " & eng & " - " & qry);
-                Put_Line("   query: " & qry);
+                Dual_IO.Put_Line(lng & " - " & eng & " - " & qry);
+                Dual_IO.Put_Line("   query: " & qry);
               end if;
               url(idx_lng, idx_eng):= U(qry);
               result:= ok;
               declare
-                web: constant String:= AWS.Response.Message_Body(AWS.Client.Get(qry));
-                -- Web page is sucked here --^
+                web: constant String:= Get_HTML(qry); -- Web page is sucked here
                 dump: File_Type;
                 tok_i: Integer;
                 i: Positive;
@@ -194,11 +223,11 @@ package body Lang_Index is
                     while (web(i) not in '0'..'9') or spec_char loop
                       if ko_word /= "" and then web(i..i+ko_word'Length-1) = ko_word then
                         if Text_IO_Monitor then
-                          Put("Escaping after the following figures: ");
+                          Dual_IO.Put("Escaping after the following figures: ");
                           for x in 1..count-1 loop
-                            Put(Integer'Image(figure(x)) & ',');
+                            Dual_IO.Put(Integer'Image(figure(x)) & ',');
                           end loop;
-                          New_Line;
+                          Dual_IO.New_Line;
                         end if;
                         -- e.g. </div> in YouTube when no result
                         result:= no_match;
@@ -208,12 +237,12 @@ package body Lang_Index is
                         when '&' =>
                           spec_char:= True;
                           if Text_IO_Monitor then
-                            Put("[Spec char on]");
+                            Dual_IO.Put("[Spec char on]");
                           end if;
                         when ';' =>
                           spec_char:= False;
                           if Text_IO_Monitor then
-                            Put("[Spec char off]");
+                            Dual_IO.Put("[Spec char off]");
                           end if;
                         when others =>
                           null;
@@ -242,7 +271,7 @@ package body Lang_Index is
                     end loop collect_digits;
                     figure(count):= r;
                     if Text_IO_Monitor then
-                      Put_Line("[figure number" & Integer'Image(count) & " is" & Integer'Image(r) & ']');
+                      Dual_IO.Put_Line("[figure number" & Integer'Image(count) & " is" & Integer'Image(r) & ']');
                     end if;
                   end loop scan;
                 end if;
@@ -267,9 +296,9 @@ package body Lang_Index is
                 result:= aws_error;
             end;
             if Text_IO_Monitor then
-              Put_Line(" result : " & Result_type'Image(result));
-              Put_Line("   hits :" & Integer'Image(hits(idx_lng, idx_eng)));
-              New_Line;
+              Dual_IO.Put_Line(" result : " & Result_type'Image(result));
+              Dual_IO.Put_Line("   hits :" & Integer'Image(hits(idx_lng, idx_eng)));
+              Dual_IO.New_Line;
             end if;
             outcome(result):= outcome(result) + 1;
             delay 1.2345;
@@ -279,15 +308,18 @@ package body Lang_Index is
       end loop;
       Close(l);
       if Text_IO_Monitor then
-        Put_Line("--------------- Done with queries --------------");
-        Put_Line("Engines  :" & Integer'Image(tot_eng));
-        Put_Line("Languages:" & Integer'Image(tot_lng(any)));
+        Dual_IO.Put_Line("--------------- Done with queries --------------");
+        Dual_IO.Put_Line("Engines  :" & Integer'Image(tot_eng));
+        Dual_IO.Put_Line("Languages:" & Integer'Image(tot_lng(any)));
         for r in outcome'Range loop
-          Put_Line(
+          Dual_IO.Put_Line(
             "Web pages with outcome... " &
             Result_type'Image(r) & ':' & Integer'Image(outcome(r))
           );
         end loop;
+      end if;
+      if Text_IO_Monitor then
+        Dual_IO.Close_Log;
       end if;
     end Gathering;
 
@@ -375,6 +407,7 @@ package body Lang_Index is
       --
       function Pct(f: Float) return String is
         str: String:= "          ";
+        use Ada.Float_Text_IO;
       begin
         Put(str, 100.0 * f, 3,0);
         return Trim(str,Left) & '%';
@@ -408,7 +441,7 @@ package body Lang_Index is
       --
       function Encode_URL(u0: Unbounded_String) return Unbounded_String is
       -- make http://validator.w3.org happier
-        s: String:= To_String(u0);
+        s: constant String:= To_String(u0);
         u: Unbounded_String;
       begin
         for i in s'Range loop

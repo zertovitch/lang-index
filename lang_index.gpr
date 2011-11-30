@@ -29,10 +29,10 @@ project Lang_Index is
       case Build_Mode is
 
          when "Debug" =>
-            for Default_Switches ("ada") use ("-gnat05", "-gnatVa", "-gnato", "-g", "-fstack-check");
+            for Default_Switches ("ada") use ("-gnatwa", "-gnat05", "-gnatVa", "-gnato", "-g", "-fstack-check");
 
          when "Small" =>
-            for Default_Switches ("ada") use ("-gnat05", "-gnatp", "-Os", "-ffunction-sections");
+            for Default_Switches ("ada") use ("-gnatwa", "-gnat05", "-gnatp", "-Os", "-ffunction-sections");
       end case;
    end Compiler;
 
