@@ -406,6 +406,22 @@ package body Lang_Index is
         return str(l..str'Last);
       end Sep1000;
       --
+      function Encode_URL(u0: Unbounded_String) return Unbounded_String is
+      -- make http://validator.w3.org happier
+        s: String:= To_String(u0);
+        u: Unbounded_String;
+      begin
+        for i in s'Range loop
+          case s(i) is
+            when '&' =>
+              u:= u & "&amp;";
+            when others =>
+              u:= u & s(i);
+          end case;
+        end loop;
+        return u;
+      end Encode_URL;
+      --
       htm : Unbounded_String renames HTML_details;
       grd : Unbounded_String renames HTML_table_categ;
       html_header: constant String:=
@@ -455,10 +471,14 @@ package body Lang_Index is
           htm:= htm & "<td>no filter</td>";
         end if;
       end loop;
-      htm:= htm & "<td bgcolor=lightgreen><b>Normalized weight &rarr;</b></td>";
+      htm:= htm & "<td bgcolor=lightgreen><b>Weight&nbsp;&rarr;<br>Normalized&nbsp;&rarr;</b></td>";
       for e in 1..tot_eng loop
         htm:= htm &
-          "<td bgcolor=lightgreen align=center>" & Pct(norm_weight(e)) & "</td>";
+          "<td bgcolor=lightgreen align=center>" &
+          Integer'Image(weight(e)) &
+          "<br>" &
+          Pct(norm_weight(e)) &
+          "</td>";
       end loop;
       htm:= htm & "<td></td></tr>" & ASCII.LF;
       htm:= htm &
@@ -481,7 +501,7 @@ package body Lang_Index is
         for e in 1..tot_eng loop
           htm:= htm &
             "<td align=center><a target=_blank href=""" &
-            url(l,e) & """>" &
+            Encode_URL(url(l,e)) & """>" &
             Sep1000(hits(l,e)) &
             "</a></td>";
         end loop;
