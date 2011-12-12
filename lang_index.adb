@@ -457,9 +457,13 @@ package body Lang_Index is
       --
       htm : Unbounded_String renames HTML_details;
       grd : Unbounded_String renames HTML_table_categ;
-      html_header: constant String:=
-        "<a href=""" & web & """>Language Popularity Index</a>" &
-        " - Web queries done on: " & time_str & "<br><br>" & ASCII.LF;
+      function html_header(anchor: String) return String is
+      begin
+        return
+          "<a href=""" & web & '#' & anchor &
+          """>Language Popularity Index</a>" &
+          " - Web queries done on: " & time_str & "<br><br>" & ASCII.LF;
+      end;
       --
       function Category_Image(c: Category) return String is
       begin
@@ -476,7 +480,7 @@ package body Lang_Index is
       ------------------------------------
       -- Header
       htm:= U(
-        html_header &
+        html_header("details") &
         "<font face=""Calibri, Tahoma, Arial""><table border=1>" &
         "<td></td><td></td><td><b>Search engine &rarr;</b></td>" & ASCII.LF
       );
@@ -553,7 +557,7 @@ package body Lang_Index is
       -- HTML main tables for display --
       ----------------------------------
       grd:= U(
-        html_header &
+        html_header("grid") &
         "<font face=""Calibri, Tahoma, Arial""><table border=1 cellspacing=5 cellpadding=5>" &
         "<tr valign=top bgcolor=#D3D3D3>" & ASCII.LF
       );
