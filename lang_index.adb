@@ -301,7 +301,7 @@ package body Lang_Index is
               Dual_IO.New_Line;
             end if;
             outcome(result):= outcome(result) + 1;
-            delay 1.2345;
+            delay 0.8; -- was 1.2345
           end loop;
           Close(e);
         end;
@@ -486,7 +486,7 @@ package body Lang_Index is
       );
       for x in 1..2 loop
         for e in 1..tot_eng loop
-          htm:= htm & "<td ";
+          htm:= htm & "<td align=center ";
           if x = 1 then
             htm:= htm & "bgcolor=lightblue";
           else
