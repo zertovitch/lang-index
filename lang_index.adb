@@ -19,7 +19,7 @@
 --
 -- Legal licensing note:
 --
---  Copyright (c) 2010..2011 Gautier de Montmollin
+--  Copyright (c) 2010..2012 Gautier de Montmollin
 --
 --  This  library  is  free software; you can redistribute it and/or  --
 --  modify it under the terms of the GNU General Public  License  as  --
@@ -125,6 +125,7 @@ package body Lang_Index is
       type Result_type is (ok, no_match, aws_error);
       outcome: array(Result_type) of Natural:= (0,0,0);
       use Dual_IO;
+      T0, T1: Time;
       --
       function Get_HTML(url: String) return String is
         timeout_msg: constant String:= "Get Timeout";
@@ -154,6 +155,8 @@ package body Lang_Index is
     begin
       if Text_IO_Monitor then
         Dual_IO.Create_Log("lang_index.log");
+        T0:= Clock;
+        Dual_IO.Put_Line("Starting - " & Time_display(T0));
       end if;
       Create_Path("match");
       Create_Path("no_match");
@@ -308,17 +311,19 @@ package body Lang_Index is
       end loop;
       Close(l);
       if Text_IO_Monitor then
+        T1:= Clock;
         Dual_IO.Put_Line("--------------- Done with queries --------------");
-        Dual_IO.Put_Line("Engines  :" & Integer'Image(tot_eng));
-        Dual_IO.Put_Line("Languages:" & Integer'Image(tot_lng(any)));
+        Dual_IO.Put_Line("Search engines  :" & Integer'Image(tot_eng));
+        Dual_IO.Put_Line("Languages       :" & Integer'Image(tot_lng(any)));
         for r in outcome'Range loop
           Dual_IO.Put_Line(
-            "Web pages with outcome... " &
-            Result_type'Image(r) & ':' & Integer'Image(outcome(r))
+            "Web pages with outcome... """ &
+            Result_type'Image(r) & """:" & Integer'Image(outcome(r))
           );
         end loop;
-      end if;
-      if Text_IO_Monitor then
+        Dual_IO.Put_Line("Started     : " & Time_display(T0));
+        Dual_IO.Put_Line("Finished    : " & Time_display(T1));
+        Dual_IO.Put_Line("Time elapsed:" & Duration'Image(T1-T0));
         Dual_IO.Close_Log;
       end if;
     end Gathering;
