@@ -323,7 +323,9 @@ package body Lang_Index is
         end loop;
         Dual_IO.Put_Line("Started     : " & Time_display(T0));
         Dual_IO.Put_Line("Finished    : " & Time_display(T1));
-        Dual_IO.Put_Line("Time elapsed:" & Duration'Image(T1-T0));
+        Dual_IO.Put_Line(
+          "Time elapsed: " & Integer'Image(Integer((T1-T0)/60)) &
+          " minutes.");
         Dual_IO.Close_Log;
       end if;
     end Gathering;
@@ -568,9 +570,15 @@ package body Lang_Index is
       );
       for cat in Category loop
         -- Header
+        if cat = any then
+          grd:= grd & "<td bgcolor=#E0E0C0>";
+        else
+          grd:= grd & "<td>";
+        end if;
         grd:= grd &
-          "<td>Language category:<b><br>" & To_Lower(Category_Image(cat)) &
+          "Language category:<b><br>" & To_Lower(Category_Image(cat)) &
           "&nbsp; <a href=#categ>*)</a></b><br>" &
+          Sep1000(tot_lng(cat)) & " entries.<br>" &
           "<br><table border=1 cellspacing=2 cellpadding=2 bgcolor=white>" &
           "<tr><td>Rank</td><td>Name</td><td>Share</td>";
         -- Grid
