@@ -1,8 +1,8 @@
 Engine;Weight;Query;Find figure after…;Figures to skip after the key;When no match, give up after…;1-Year filter;Test
-Google;23;http://www.google.com/search?tbs=qdr:y&sourceid=chrome&hl=fr&q=;Résultats;2;;true;http://www.google.com/search?tbs=qdr:y&sourceid=chrome&hl=fr&q=%2B%22Ada%20programming%22
+Google;23;http://www.google.com/search?tbs=qdr:y&sourceid=chrome&hl=fr&q=;echerche avanc;0;;true;http://www.google.com/search?tbs=qdr:y&sourceid=chrome&hl=fr&q=%2B%22Ada%20programming%22
 Yahoo!;7;http://search.yahoo.com/search?vd=y&q=;"class=""query"">";0;;true;http://search.yahoo.com/search?vd=y&q=%2B%22Ada%20programming%22
 Bing;7;http://www.bing.com/search?cc=us&Market=en-US&tbs=qdr:y&q=;"class=""sb_count""";2;;true;http://www.bing.com/search?cc=us&Market=en-US&tbs=qdr:y&q=%2B%22Ada%20programming%22
-Google Blogs;23;http://www.google.com/search?tbs=blg:1,qdr:y&sourceid=chrome&hl=fr&q=;Résultats;2;;true;http://www.google.com/search?tbs=blg:1,qdr:y&sourceid=chrome&hl=fr&q=%2B%22Ada%20programming%22
+Google Blogs;23;http://www.google.com/search?tbs=blg:1,qdr:y&sourceid=chrome&hl=fr&q=;echerche avanc;0;;true;http://www.google.com/search?tbs=blg:1,qdr:y&sourceid=chrome&hl=fr&q=%2B%22Ada%20programming%22
 Amazon;7;http://www.amazon.com/s/?field-keywords=;"""resultCount"">";2;</div>;false;http://www.amazon.com/s/?field-keywords=%2B%22Ada%20programming%22
 YouTube;7;http://www.youtube.com/results?search_query=;num-results;0;</div>;false;http://www.youtube.com/results?search_query=%2B%22Ada%20programming%22
 Wikipedia;23;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=;</b> of <b>;0;;false;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=%2B%22Ada%20programming%22
