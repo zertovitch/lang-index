@@ -406,6 +406,53 @@ package body Lang_Index is
       end loop;
     end Statistics;
 
+    type History_point is (last_month, last_year);
+
+    function Get_old_data(
+      language: String;
+      hp      : History_point
+    )
+    return String
+    is
+      h: File_Type;
+      y1: Positive:= Year(now);
+      m1: Positive:= Month(now);
+    begin
+      case hp is
+        when last_month =>
+          if m1 = 1 then
+            m1:= 12;
+            y1:= y1 - 1;
+          else
+            m1:= m1 - 1;
+          end if;
+        when last_year =>
+          y1:= y1 - 1;
+      end case;
+      Open(h, In_File, "h.csv"); -- Open the history file
+      Skip_Line(h); -- header
+	  -- Format: Ada; 2011; 3; 9.02%
+      while not End_Of_File(h) loop
+        declare
+          lh : constant String:= Get_Line(h);
+          fh : constant CSV.Fields_Bounds:= CSV.Get_Bounds(lh, sep);
+          lng: constant String:= CSV.Extract(lh, fh, 1, True);
+          y  : constant Positive:= Integer'Value(CSV.Extract(lh, fh, 2, True));
+          m  : constant Positive:= Integer'Value(CSV.Extract(lh, fh, 3, True));
+        begin
+          if lng = language and y = y1 and m = m1 then
+            Close(h);
+            return CSV.Extract(lh, fh, 4, True);
+          end if;
+        end;
+      end loop;
+      Close(h);
+      return "--";
+    exception
+      when Ada.Text_IO.Name_Error =>
+        return "N/A"; -- no history file
+    end Get_old_data;
+
     -------------------------------
     -- Produce nice HTML reports --
     -------------------------------
@@ -580,14 +627,37 @@ package body Lang_Index is
           "&nbsp; <a href=#categ>*)</a></b><br>" &
           Sep1000(tot_lng(cat)) & " entries.<br>" &
           "<br><table border=1 cellspacing=2 cellpadding=2 bgcolor=white>" &
-          "<tr><td>Rank</td><td>Name</td><td>Share</td>";
+          "<tr><td>Rank</td><td>Name</td>" &
+          "<td>Share</td>";
+        if cat = any then
+          for hp in History_point loop
+            grd:= grd & "<td>Share<br>";
+            case hp is
+              when last_month =>
+                grd:= grd & "last month";
+              when last_year =>
+                grd:= grd & "last year";
+            end case;
+            grd:= grd & "</td>";
+          end loop;
+        end if;
         -- Grid
         for lc in 1..tot_lng(cat) loop
           grd:= grd &
             "<tr><td>" & Integer'Image(lc) &
             "</td><td>" & name_lng(rank_avg(cat)(lc).index) &
             "</td><td>" & Pct(rank_avg(cat)(lc).value) &
-            "</td></tr>" & ASCII.LF;
+            "</td>";
+          if cat = any then
+            for hp in History_point loop
+              grd:= grd &
+                "<td>" &
+                Get_old_data(S(name_lng(rank_avg(cat)(lc).index)), hp) &
+                "</td>";
+            end loop;
+          end if;
+          grd:= grd &
+            "</tr>" & ASCII.LF;
         end loop;
         grd:= grd & "</table></td>" & ASCII.LF;
       end loop;
