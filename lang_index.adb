@@ -223,8 +223,10 @@ package body Lang_Index is
                   scan:
                   for count in figure'Range loop
                     r:= 0;
+                    -- Skipping non-numeric characters
                     while (web(i) not in '0'..'9') or spec_char loop
                       if ko_word /= "" and then web(i..i+ko_word'Length-1) = ko_word then
+                        -- e.g. </div> in YouTube when no result
                         if Text_IO_Monitor then
                           Dual_IO.Put("Escaping after the following figures: ");
                           for x in 1..count-1 loop
@@ -232,8 +234,14 @@ package body Lang_Index is
                           end loop;
                           Dual_IO.New_Line;
                         end if;
-                        -- e.g. </div> in YouTube when no result
                         result:= no_match;
+                        for x in 1..count-1 loop
+                          r:= Integer'Max(r, figure(x));
+                          result:= ok;
+                          -- We capture the case where there are fewer numbers
+                          -- displayed than expected, typically: "4 results"
+                          -- instead of "1-10 of 15 results".
+                        end loop;
                         exit scan;
                       end if;
                       case web(i) is
@@ -252,6 +260,7 @@ package body Lang_Index is
                       end case;
                       i:= i + 1;
                     end loop;
+                    -- Now we are on a number
                     collect_digits:
                     loop
                       if web(i) in '0'..'9' then
