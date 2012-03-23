@@ -224,7 +224,10 @@ package body Lang_Index is
                   for count in figure'Range loop
                     r:= 0;
                     -- Skipping non-numeric characters
-                    while (web(i) not in '0'..'9') or spec_char loop
+                    while (web(i) not in '0'..'9')
+                       or spec_char
+                       or (To_Upper(web(i-1)) in 'A'..'Z') -- E.g. the 2 in </H2>
+                    loop
                       if ko_word /= "" and then web(i..i+ko_word'Length-1) = ko_word then
                         -- e.g. </div> in YouTube when no result
                         if Text_IO_Monitor then
@@ -640,14 +643,14 @@ package body Lang_Index is
           "<td>Share</td>";
         if cat = any then
           for hp in History_point loop
-            grd:= grd & "<td>Share<br>";
+            grd:= grd & "<td>";
             case hp is
               when last_month =>
-                grd:= grd & "last month";
+                grd:= grd & "Last month's";
               when last_year =>
-                grd:= grd & "last year";
+                grd:= grd & "Last year's";
             end case;
-            grd:= grd & "</td>";
+            grd:= grd & "<br>share</td>";
           end loop;
         end if;
         -- Grid
