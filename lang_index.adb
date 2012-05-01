@@ -212,6 +212,23 @@ package body Lang_Index is
                 r: Natural;
                 figure: array(1..1+skip) of Natural:= (others => 1234);
                 spec_char: Boolean; -- &nbsp; or &#233; with a figure in it!
+                procedure Spec_char_check is
+                begin
+                  case web(i) is
+                    when '&' =>
+                      spec_char:= True;
+                      if Text_IO_Monitor then
+                        Dual_IO.Put("[Spec char on]");
+                      end if;
+                    when ';' =>
+                      spec_char:= False;
+                      if Text_IO_Monitor then
+                        Dual_IO.Put("[Spec char off]");
+                      end if;
+                    when others =>
+                      null;
+                  end case;
+                end Spec_char_check;
               begin
                 tok_i:= Index(web, match);
                 if tok_i = 0 then
@@ -247,32 +264,23 @@ package body Lang_Index is
                         end loop;
                         exit scan;
                       end if;
-                      case web(i) is
-                        when '&' =>
-                          spec_char:= True;
-                          if Text_IO_Monitor then
-                            Dual_IO.Put("[Spec char on]");
-                          end if;
-                        when ';' =>
-                          spec_char:= False;
-                          if Text_IO_Monitor then
-                            Dual_IO.Put("[Spec char off]");
-                          end if;
-                        when others =>
-                          null;
-                      end case;
+                      Spec_char_check;
                       i:= i + 1;
                     end loop;
                     -- Now we are on a number
                     collect_digits:
                     loop
-                      if web(i) in '0'..'9' then
+                      if (not spec_char) and
+                         -- we do nothing within a special char
+                         web(i) in '0'..'9'
+                      then
                         r:= r * 10 + Integer'Value(web(i) & "");
                       end if;
                       i:= i + 1;
+                      Spec_char_check;
                       case web(i) is
                         when '<' | ' ' | '-' | Character'Val(16#A0#) =>
-                          -- ^ anything that might separate numbers
+                          -- ^ characters that might separate numbers
                           if web(i) = ' ' and web(i+1) in '0'..'9' then
                             null;
                             -- special case: we have a spacing as thousands separator
