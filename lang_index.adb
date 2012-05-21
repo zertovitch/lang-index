@@ -548,7 +548,9 @@ package body Lang_Index is
             return Category'Image(c);
         end case;
       end Category_Image;
-    begin
+      --
+      hc: File_Type;
+    begin -- Report
       ------------------------------------
       -- HTML grid with details & links --
       ------------------------------------
@@ -635,6 +637,13 @@ package body Lang_Index is
         "<font face=""Calibri, Tahoma, Arial""><table border=1 cellspacing=5 cellpadding=5>" &
         "<tr valign=top bgcolor=#D3D3D3>" & ASCII.LF
       );
+      Create(hc, out_file, "hist_compar.csv");
+      Put_Line(hc,
+        "Language" & sep &
+        "Now" & sep &
+        "M-1" & sep & "diff" & sep & "diff rel" & sep &
+        "Y-1" & sep & "diff" & sep & "diff rel"
+      );
       for cat in Category loop
         -- Header
         if cat = any then
@@ -668,19 +677,25 @@ package body Lang_Index is
             "</td><td>" & name_lng(rank_avg(cat)(lc).index) &
             "</td><td>" & Pct(rank_avg(cat)(lc).value) &
             "</td>";
+          Put(hc, Pct(rank_avg(cat)(lc).value) & sep);
           if cat = any then
+            Put(hc, S(name_lng(rank_avg(cat)(lc).index)) & sep);
             for hp in History_point loop
-              grd:= grd &
-                "<td>" &
-                Get_old_data(S(name_lng(rank_avg(cat)(lc).index)), hp) &
-                "</td>";
+              declare
+                old_data: constant String:= Get_old_data(S(name_lng(rank_avg(cat)(lc).index)), hp);
+              begin
+                grd:= grd & "<td>" & old_data & "</td>";
+                Put(hc, old_data & sep & sep & sep);
+              end;
             end loop;
+            New_Line(hc);
           end if;
           grd:= grd &
             "</tr>" & ASCII.LF;
         end loop;
         grd:= grd & "</table></td>" & ASCII.LF;
       end loop;
+      Close(hc);
       grd:= grd & "</tr></table></font>" & ASCII.LF;
     end Report;
     --
