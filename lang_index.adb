@@ -677,9 +677,9 @@ package body Lang_Index is
             "</td><td>" & name_lng(rank_avg(cat)(lc).index) &
             "</td><td>" & Pct(rank_avg(cat)(lc).value) &
             "</td>";
-          Put(hc, Pct(rank_avg(cat)(lc).value) & sep);
           if cat = any then
             Put(hc, S(name_lng(rank_avg(cat)(lc).index)) & sep);
+            Put(hc, Pct(rank_avg(cat)(lc).value) & sep);
             for hp in History_point loop
               declare
                 old_data: constant String:= Get_old_data(S(name_lng(rank_avg(cat)(lc).index)), hp);
