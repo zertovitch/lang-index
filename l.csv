@@ -40,6 +40,7 @@ Focus;Focus;Other;100;;;--
 Forth;Forth;Compiled;100;;;--
 Fortran;Fortran;Compiled;100;;;--
 FoxPro/xBase;Fox%20Pro;Other;100;;;--
+Gambas;gambas;Compiled;100;-- Contrib by Frédéric Praca;02.10.2012;--
 Genie;Genie;Compiled;100;;;--
 Go;Go;Compiled;100;;;--
 Groovy;Groovy;Script;100;;;--
