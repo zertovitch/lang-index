@@ -19,7 +19,7 @@
 --
 -- Legal licensing note:
 --
---  Copyright (c) 2010..2012 Gautier de Montmollin
+--  Copyright (c) 2010..2013 Gautier de Montmollin
 --
 --  This  library  is  free software; you can redistribute it and/or  --
 --  modify it under the terms of the GNU General Public  License  as  --

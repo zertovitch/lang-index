@@ -19,7 +19,7 @@
 --
 -- Legal licensing note:
 --
---  Copyright (c) 2010..2012 Gautier de Montmollin
+--  Copyright (c) 2010..2013 Gautier de Montmollin
 --
 --  This  library  is  free software; you can redistribute it and/or  --
 --  modify it under the terms of the GNU General Public  License  as  --
@@ -163,6 +163,7 @@ package body Lang_Index is
       Open(l, In_File, "l.csv"); -- Open the language file
       Skip_Line(l); -- header
       while not End_Of_File(l) loop
+        idx_lng:= idx_lng + 1;
         declare
           ll     : constant String:= Get_Line(l);
           fl     : constant CSV.Fields_Bounds:= CSV.Get_Bounds(ll, sep);
@@ -172,7 +173,6 @@ package body Lang_Index is
           idx_eng: Natural:= 0;
           result: Result_type;
         begin
-          idx_lng:= idx_lng + 1;
           tot_lng(any):= Integer'Max(tot_lng(any), idx_lng);
           lng_categ(idx_lng):= Category'Value(cat);
           confidence(idx_lng):= Integer'Value(CSV.Extract(ll, fl, 4, True));
@@ -181,6 +181,7 @@ package body Lang_Index is
           Open(e, In_File, "e.csv"); -- Open the engine file
           Skip_Line(e); -- header
           while not End_Of_File(e) loop
+            idx_eng:= idx_eng + 1;
             declare
               le : constant String:= Get_Line(e);
               fe : constant CSV.Fields_Bounds:= CSV.Get_Bounds(le, sep);
@@ -193,7 +194,6 @@ package body Lang_Index is
               ko_word: constant String:= CSV.Extract(le, fe, 6, True);
               filter : constant Boolean:= Boolean'Value(CSV.Extract(le, fe, 7, True));
             begin
-              idx_eng:= idx_eng + 1;
               tot_eng:= Integer'Max(tot_eng, idx_eng);
               weight(idx_eng):= Integer'Value(CSV.Extract(le, fe, 2, True));
               name_eng(idx_eng):= U(eng);
@@ -324,7 +324,12 @@ package body Lang_Index is
               Dual_IO.New_Line;
             end if;
             outcome(result):= outcome(result) + 1;
-            delay 0.8; -- was 1.2345
+            if idx_lng mod 10 = 0 and idx_eng = 1 then
+              delay 2.0 * 60.0;
+            else
+              delay 5.0;
+            end if;              
+            -- delay 0.8 ok till Jan-2013
           end loop;
           Close(e);
         end;
