@@ -1,8 +1,8 @@
 Engine;Weight;Query;Find figure after…;Figures to skip after the key;When no match, give up after…;1-Year filter
-Google;23;http://www.google.com/search?tbs=qdr:y&sourceid=chrome&hl=fr&q=;resultStats>;0;;true
-Yahoo!;5;http://search.yahoo.com/search?vd=y&b=61&q=;"class=""query"">";0;;true
-Bing;3;http://www.bing.com/search?cc=us&Market=en-US&tbs=qdr%3ay&first=111&q=;"class=""sb_count""";2;</span>;true
-Google Blogs;23;http://www.google.com/search?tbs=blg:1,qdr:y&sourceid=chrome&hl=fr&q=;resultStats>;0;;true
-Amazon;7;http://www.amazon.com/s/?field-keywords=;"""resultCount"">";2;</div>;false
-YouTube;7;http://www.youtube.com/results?hl=en&search_query=;num-results;0;</div>;false
-Wikipedia;23;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=;</b> of <b>;0;;false
+Google;23;http://www.google.com/webhp?tbs=qdr:y&sourceid=chrome&hl=fr#bav=on.2,or.r_cp.r_qf.&cad=b&fp=1&q=\&tbas=0;resultStats>;0;;true
+Yahoo!;5;http://search.yahoo.com/search?vd=y&b=61&q=\;"class=""query"">";0;;true
+Bing;3;http://www.bing.com/search?cc=us&Market=en-US&tbs=qdr%3ay&first=111&q=\;"class=""sb_count""";2;</span>;true
+Google Blogs;23;http://www.google.com/search?tbs=blg:1,qdr:y&sourceid=chrome&tbas=0&hl=fr#bav=on.2,or.r_cp.r_qf.&q=\;resultStats>;0;;true
+Amazon;7;http://www.amazon.com/s/?field-keywords=\;"""resultCount"">";2;</div>;false
+YouTube;7;http://www.youtube.com/results?hl=en&search_query=\;num-results;0;</div>;false
+Wikipedia;23;http://en.wikipedia.org/w/index.php?title=Special:Search&fulltext=Search&search=\;</b> of <b>;0;;false

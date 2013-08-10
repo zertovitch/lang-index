@@ -84,6 +84,25 @@ package body Lang_Index is
   now: constant Time:= Clock;
   time_str: constant String:= Time_display(now, False);
 
+  function Place_query(q, search_str: String) return String is
+    idx: constant Natural:= Index(q, "\");
+  begin
+    if idx = 0 then
+      return q;
+    else
+      return
+        Place_query( -- recursive call: search string may appear several times
+          Replace_Slice(
+            Source => q,
+            Low    => idx,
+            High   => idx,
+            By     => search_str
+           ),
+          search_str
+        );
+    end if;
+  end Place_query;
+
   function Replace_Google_Blogs_Special(q: String) return String is
     with_date_last_year: constant String:=
       "as_miny=" & Trim(Integer'Image(Year(now)-1), Left) &
@@ -187,7 +206,10 @@ package body Lang_Index is
               fe : constant CSV.Fields_Bounds:= CSV.Get_Bounds(le, sep);
               eng: constant String:= CSV.Extract(le, fe, 1, True);
               qry_0: constant String:=
-                CSV.Extract(le, fe, 3, True) & "%2B%22" & lng_qry & "%20programming%22";
+                Place_query(
+                  CSV.Extract(le, fe, 3, True),
+                  "%2B%22" & lng_qry & "%20programming%22"
+                );
               qry: constant String:= Replace_Google_Blogs_Special(qry_0);
               match: constant String := CSV.Extract(le, fe, 4, True);
               skip : constant Natural:= Integer'Value(CSV.Extract(le, fe, 5, True));
@@ -328,7 +350,7 @@ package body Lang_Index is
               delay 2.0 * 60.0;
             else
               delay 5.0;
-            end if;              
+            end if;
             -- delay 0.8 ok till Jan-2013
           end loop;
           Close(e);
