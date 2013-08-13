@@ -27,10 +27,11 @@ Coffeescript;Coffeescript;Script;100;;10.03.2012;--
 Csound;Csound;Other;100;;09.03.2012;--
 Cyclone;Cyclone;Compiled;100;;25.06.2012;--
 D;D;Compiled;77;Many 3-D, chapter enum's, etc. in Google search ;26.04.2010;Clusty+Google
-Dart;Dart;Script;100;;10.10.11;--
+Dart;Dart;Script;100;;10.10.2011;--
 Delphi;Delphi;Compiled;100;;;--
 Dylan;Dylan;Compiled;100;;;--
 Eiffel;Eiffel;Compiled;100;;;--
+Elixir;Elixir;Compiled;100;Contrib Clark Grubb;13.08.2013;
 Erlang;Erlang;Compiled;100;;;--
 Euphoria;Euphoria;Compiled;100;;;--
 Factor;Factor;Compiled;100;;;--
@@ -54,6 +55,7 @@ J;J;Script;100;;;--
 Java;Java;Compiled;100;;;--
 JavaFX Script;JavaFX%20Script;Script;100;;;--
 JavaScript;JavaScript;Script;100;;;--
+Julia;Julia;Compiled;100;Contrib Clark Grubb;13.08.2013;
 LabView;LabView;Other;100;;;--
 LabWindows/CVI;CVI;Other;100;;;--
 Limbo;Limbo;Compiled;100;;;--
