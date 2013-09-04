@@ -22,6 +22,7 @@ CL (OS/400);CL;Script;100;;;--
 Clipper;Clipper;Compiled;100;;;--
 Clojure;Clojure;Script;100;-- Contrib by Antonio Maniero;15.06.2011;--
 COBOL;COBOL;Other;100;;;--
+Cobra;Cobra;Compiled;100;Contrib by Jos Verheyen;04.09.2013;
 ColdFusion;ColdFusion;Script;100;;;--
 Coffeescript;Coffeescript;Script;100;;10.03.2012;--
 Csound;Csound;Other;100;;09.03.2012;--
