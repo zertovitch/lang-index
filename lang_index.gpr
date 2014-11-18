@@ -4,7 +4,7 @@
 --
 project Lang_Index is
 
-   for Main use ("lang_index_to_files.adb", "lang_index_to_files_and_db.adb", "tb.ads", "test_query.adb", "tb_tq.ads");
+   for Main use ("lang_index_to_files.adb", "tb.ads", "test_query.adb", "tb_tq.ads");
    for Source_Dirs use (".", "aws_stuff");
    for Exec_Dir use ".";
    type Build_Mode_Type is
