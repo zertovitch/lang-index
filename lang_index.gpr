@@ -2,10 +2,12 @@
 -- for the Lang_Index project ( http://sourceforge.net/projects/lang-index/ )
 -- Build me with "gnatmake -P lang_index.gpr", or open me with GPS
 --
+with "aws";
+
 project Lang_Index is
 
-   for Main use ("lang_index_to_files.adb", "tb.ads", "test_query.adb", "tb_tq.ads");
-   for Source_Dirs use (".", "aws_stuff");
+   for Main use ("lang_index_to_files.adb", "tb.ads", "test_query.adb");
+   for Source_Dirs use (".");
    for Exec_Dir use ".";
    type Build_Mode_Type is
       ("Debug", "Small");
