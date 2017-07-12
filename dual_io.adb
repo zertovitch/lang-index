@@ -3,7 +3,7 @@ package body Dual_IO is
 
    Log_open : Boolean:= False;
 
-   Log_text : Text_IO.File_type;
+   Log_text : Text_IO.File_Type;
 
    procedure Check_Log is
    begin
@@ -34,6 +34,11 @@ package body Dual_IO is
      Text_IO.Close( Log_text );
      Log_open:= False;
    end Close_Log;
+
+   function Is_Log_Open return Boolean is
+   begin
+     return Log_open;
+   end Is_Log_Open;
 
    procedure Close_and_Append_Log is
      log_name: constant String:= Text_IO.Name( Log_text );
